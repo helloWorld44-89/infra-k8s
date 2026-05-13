@@ -12,7 +12,7 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: tools
-
+---
 apiVersion: v1
 kind: Namespace
 metadata:
