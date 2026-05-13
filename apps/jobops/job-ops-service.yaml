@@ -7,6 +7,7 @@ metadata:
   labels:
     io.kompose.service: job-ops
   name: job-ops
+  namespace: apps
 spec:
   ports:
     - name: "3005"

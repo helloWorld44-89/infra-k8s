@@ -4,6 +4,7 @@ metadata:
   labels:
     io.kompose.service: job-ops-claim0
   name: job-ops-claim0
+  namespace: apps
 spec:
   accessModes:
     - ReadWriteOnce

@@ -4,6 +4,7 @@ metadata:
   labels:
     io.kompose.service: codex-home
   name: codex-home
+  namespace: apps
 spec:
   accessModes:
     - ReadWriteOnce
