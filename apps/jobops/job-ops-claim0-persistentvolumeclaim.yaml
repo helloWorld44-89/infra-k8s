@@ -8,6 +8,22 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
+  storageClassName: nfs
   resources:
     requests:
-      storage: 100Mi
+      storage: 5Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    io.kompose.service: codex-home
+  name: codex-home
+  namespace: apps
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: nfs
+  resources:
+    requests:
+      storage: 1Gi
