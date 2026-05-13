@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.38.0 (a8f5d1cbd)
+  labels:
+    io.kompose.service: job-ops
+  name: job-ops
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: job-ops
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.38.0 (a8f5d1cbd)
+      labels:
+        io.kompose.service: job-ops
+    spec:
+      containers:
+        - env:
+            - name: CODEX_HOME
+              value: /app/codex-home
+            - name: NODE_ENV
+              value: production
+            - name: PORT
+              value: "3001"
+            - name: PYTHON_PATH
+              value: /usr/bin/python3
+          envFrom:
+            - configMapRef:
+                name: env
+          image: ghcr.io/dakheera47/job-ops:latest
+          livenessProbe:
+            exec:
+              command:
+                - curl
+                - -f
+                - http://localhost:3001/health
+            failureThreshold: 3
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 10
+          name: job-ops
+          ports:
+            - containerPort: 3001
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /app/data
+              name: job-ops-claim0
+            - mountPath: /app/codex-home
+              name: codex-home
+      restartPolicy: Always
+      volumes:
+        - name: job-ops-claim0
+          persistentVolumeClaim:
+            claimName: job-ops-claim0
+        - name: codex-home
+          persistentVolumeClaim:
+            claimName: codex-home

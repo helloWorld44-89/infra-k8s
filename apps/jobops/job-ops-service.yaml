@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.38.0 (a8f5d1cbd)
+  labels:
+    io.kompose.service: job-ops
+  name: job-ops
+spec:
+  ports:
+    - name: "3005"
+      port: 3005
+      targetPort: 3001
+  selector:
+    io.kompose.service: job-ops

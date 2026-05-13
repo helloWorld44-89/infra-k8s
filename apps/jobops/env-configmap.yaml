@@ -1,0 +1,20 @@
+apiVersion: v1
+data:
+  ADZUNA_APP_ID: ""
+  ADZUNA_APP_KEY: ""
+  APIFY_TOKEN: ""
+  BASIC_AUTH_PASSWORD: ""
+  BASIC_AUTH_USER: ""
+  GMAIL_OAUTH_CLIENT_ID: ""
+  GMAIL_OAUTH_CLIENT_SECRET: ""
+  JOBOPS_PUBLIC_BASE_URL: ""
+  MODEL: google/gemini-3-flash-preview
+  RXRESUME_API_KEY: ""
+  UKVISAJOBS_EMAIL: ""
+  UKVISAJOBS_HEADLESS: "true"
+  UKVISAJOBS_PASSWORD: ""
+kind: ConfigMap
+metadata:
+  labels:
+    io.kompose.service: job-ops-env
+  name: env
