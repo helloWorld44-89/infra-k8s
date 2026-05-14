@@ -36,6 +36,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: env
+            - secretRef:
+                name: jobops-secrets
           image: ghcr.io/dakheera47/job-ops:latest
           livenessProbe:
             exec:

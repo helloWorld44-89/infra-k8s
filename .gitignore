@@ -1,0 +1,8 @@
+# SOPS decrypted files - never commit plaintext secrets
+*.plain.yaml
+*.dec.yaml
+*.decrypted.yaml
+
+# age private key
+*.agekey
+age.key
