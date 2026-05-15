@@ -1,0 +1,58 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homepage-config
+  namespace: tools
+data:
+  settings.yaml: |
+    title: Conder Home
+    background: https://images.unsplash.com/photo-1502790671504-542ad42d5189
+    cardBlur: sm
+    theme: dark
+    color: slate
+    useEqualHeights: true
+
+  widgets.yaml: |
+    - greeting:
+        text_size: 3xl
+        text: Welcome back!
+    - datetime:
+        text_size: xl
+        format:
+          dateStyle: long
+          timeStyle: short
+          hourCycle: h23
+
+  services.yaml: |
+    - Monitoring:
+        - Grafana:
+            href: https://grafana.conderhome.xyz
+            description: Metrics dashboards
+            icon: grafana.png
+        - Prometheus:
+            href: https://prometheus.conderhome.xyz
+            description: Metrics collection
+            icon: prometheus.png
+        - Uptime Kuma:
+            href: https://kuma.conderhome.xyz
+            description: Uptime monitoring
+            icon: uptime-kuma.png
+    - Tools:
+        - Kubernetes Dashboard:
+            href: https://dashboard.conderhome.xyz
+            description: Cluster management
+            icon: kubernetes.png
+        - CloudBeaver:
+            href: https://cloudbeaver.conderhome.xyz
+            description: Database management
+            icon: dbeaver.png
+    - Apps:
+        - Job Ops:
+            href: https://jobops.conderhome.xyz
+            description: Job operations
+
+  bookmarks.yaml: |
+    - Cluster:
+        - GitHub:
+            - href: https://github.com
+              icon: github.png

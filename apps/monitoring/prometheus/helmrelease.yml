@@ -1,0 +1,33 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: prometheus
+  namespace: monitoring
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: prometheus
+      version: "25.x"
+      sourceRef:
+        kind: HelmRepository
+        name: prometheus-community
+        namespace: flux-system
+  values:
+    server:
+      persistentVolume:
+        enabled: true
+        size: 5Gi
+      ingress:
+        enabled: true
+        ingressClassName: traefik
+        hosts:
+          - prometheus.conderhome.xyz
+        paths:
+          - /
+    alertmanager:
+      enabled: false
+    prometheus-pushgateway:
+      enabled: false
+    kube-state-metrics:
+      enabled: true
