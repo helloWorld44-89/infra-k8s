@@ -15,39 +15,23 @@ spec:
         namespace: flux-system
   values:
     provider:
-      name: webhook
-      webhook:
-        image:
-          repository: docker.io/mweise05/external-dns-pihole-webhook
-          tag: "latest"
-        env:
-          - name: PIHOLE_ADDRESS
-            valueFrom:
-              secretKeyRef:
-                name: external-dns-pihole
-                key: address
-          - name: PIHOLE_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: external-dns-pihole
-                key: password
-          - name: PIHOLE_TLS_INSECURE_SKIP_VERIFY
-            value: "true"
-        ports:
-          - name: http
-            containerPort: 8888
-        livenessProbe:
-          httpGet:
-            path: /healthz
-            port: http
-          initialDelaySeconds: 10
-          timeoutSeconds: 5
-        readinessProbe:
-          httpGet:
-            path: /readyz
-            port: http
-          initialDelaySeconds: 10
-          timeoutSeconds: 5
+      name: pihole
+
+    extraArgs:
+      - --pihole-tls-skip-verify
+
+    env:
+      - name: EXTERNAL_DNS_PIHOLE_SERVER
+        valueFrom:
+          secretKeyRef:
+            name: external-dns-pihole
+            key: address
+      - name: EXTERNAL_DNS_PIHOLE_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: external-dns-pihole
+            key: password
+
     policy: upsert-only
     sources:
       - ingress

@@ -22,13 +22,11 @@ spec:
     # Bundled dependencies — swap for external if you already have PostgreSQL/Redis
     postgres:
       local_setup: true
-      image:
-        tag: "15-alpine"
+      image: "postgres:15-alpine"
 
     redis:
       local_setup: true
-      image:
-        tag: "7-alpine"
+      image: "redis:7-alpine"
 
     minio:
       local_setup: true
