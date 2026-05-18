@@ -13,6 +13,15 @@ spec:
         kind: HelmRepository
         name: plane
         namespace: flux-system
+  valuesFrom:
+    - kind: Secret
+      name: plane-secrets
+      valuesKey: SECRET_KEY
+      targetPath: env.secret_key
+    - kind: Secret
+      name: plane-secrets
+      valuesKey: POSTGRES_PASSWORD
+      targetPath: env.pgdb_password
   values:
     ingress:
       enabled: true
@@ -32,18 +41,6 @@ spec:
       local_setup: true
       # File URLs will be served through the ingress host
       local_domain: plane.conderhome.xyz
-
-    env:
-      secret_key:
-        valueFrom:
-          secretKeyRef:
-            name: plane-secrets
-            key: SECRET_KEY
-      pgdb_password:
-        valueFrom:
-          secretKeyRef:
-            name: plane-secrets
-            key: POSTGRES_PASSWORD
 
     web:
       replicas: 1
