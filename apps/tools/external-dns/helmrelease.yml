@@ -20,6 +20,7 @@ spec:
     extraArgs:
       - --pihole-tls-skip-verify
       - --pihole-api-version=6
+      - --source=traefik-proxy
 
     env:
       - name: EXTERNAL_DNS_PIHOLE_SERVER
