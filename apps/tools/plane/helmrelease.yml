@@ -1,0 +1,60 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: plane
+  namespace: tools
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: plane-ce
+      version: "1.x"
+      sourceRef:
+        kind: HelmRepository
+        name: plane
+        namespace: flux-system
+  values:
+    ingress:
+      enabled: true
+      host: plane.conderhome.xyz
+      ingressClass: traefik
+
+    # Bundled dependencies — swap for external if you already have PostgreSQL/Redis
+    postgres:
+      local_setup: true
+      image:
+        tag: "15-alpine"
+
+    redis:
+      local_setup: true
+      image:
+        tag: "7-alpine"
+
+    minio:
+      local_setup: true
+      # File URLs will be served through the ingress host
+      local_domain: plane.conderhome.xyz
+
+    env:
+      secret_key:
+        valueFrom:
+          secretKeyRef:
+            name: plane-secrets
+            key: SECRET_KEY
+      pgdb_password:
+        valueFrom:
+          secretKeyRef:
+            name: plane-secrets
+            key: POSTGRES_PASSWORD
+
+    web:
+      replicas: 1
+
+    api:
+      replicas: 1
+
+    worker:
+      replicas: 1
+
+    beatWorker:
+      replicas: 1

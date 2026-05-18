@@ -1,0 +1,58 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: external-dns
+  namespace: tools
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: external-dns
+      version: "1.x"
+      sourceRef:
+        kind: HelmRepository
+        name: external-dns
+        namespace: flux-system
+  values:
+    provider:
+      name: webhook
+      webhook:
+        image:
+          repository: docker.io/mweise05/external-dns-pihole-webhook
+          tag: "latest"
+        env:
+          - name: PIHOLE_ADDRESS
+            valueFrom:
+              secretKeyRef:
+                name: external-dns-pihole
+                key: address
+          - name: PIHOLE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: external-dns-pihole
+                key: password
+          - name: PIHOLE_TLS_INSECURE_SKIP_VERIFY
+            value: "true"
+        ports:
+          - name: http
+            containerPort: 8888
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: http
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: http
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+    policy: upsert-only
+    sources:
+      - ingress
+    domainFilters:
+      - conderhome.xyz
+    txtOwnerId: prod
+    interval: 5m
+    logLevel: info
