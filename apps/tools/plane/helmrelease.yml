@@ -25,7 +25,7 @@ spec:
   values:
     ingress:
       enabled: true
-      host: plane.conderhome.xyz
+      appHost: plane.conderhome.xyz
       ingressClass: traefik
 
     # Bundled dependencies — swap for external if you already have PostgreSQL/Redis
