@@ -27,6 +27,9 @@ spec:
       enabled: true
       appHost: plane.conderhome.xyz
       ingressClass: traefik
+    ssl:
+      generateCerts: false
+      tls_secret_name: ""
 
     # Bundled dependencies — swap for external if you already have PostgreSQL/Redis
     postgres:
