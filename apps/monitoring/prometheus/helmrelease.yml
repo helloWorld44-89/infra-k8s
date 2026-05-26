@@ -31,3 +31,42 @@ spec:
       enabled: false
     kube-state-metrics:
       enabled: true
+    extraScrapeConfigs: |
+      - job_name: 'homelab-proxmox'
+        static_configs:
+          - targets: ['192.168.5.10:9100']
+            labels: {hostname: 'Balerion'}
+          - targets: ['192.168.5.12:9100']
+            labels: {hostname: 'Smaug'}
+          - targets: ['192.168.5.11:9100']
+            labels: {hostname: 'toothless'}
+
+      - job_name: 'homelab-servers'
+        static_configs:
+          - targets: ['192.168.5.40:9100']
+            labels: {hostname: 'prod-ubsrv-01'}
+          - targets: ['192.168.5.43:9100']
+            labels: {hostname: 'prod-ubsrv-02'}
+          - targets: ['192.168.5.42:9100']
+            labels: {hostname: 'prod-ubsrv-03'}
+          - targets: ['192.168.5.45:9100']
+            labels: {hostname: 'dev-ubsrv-01'}
+          - targets: ['192.168.5.48:9100']
+            labels: {hostname: 'prod-debsrv'}
+          - targets: ['192.168.5.35:9100']
+            labels: {hostname: 'prod-vault'}
+          - targets: ['192.168.5.50:9100']
+            labels: {hostname: 'prod-hermes-01'}
+          - targets: ['192.168.5.27:9100']
+            labels: {hostname: 'fedsr02'}
+
+      - job_name: 'homelab-pi'
+        static_configs:
+          - targets: ['192.168.5.5:9100']
+            labels: {hostname: 'pisrv01'}
+          - targets: ['192.168.5.6:9100']
+            labels: {hostname: 'pisrv02'}
+      - job_name: 'homelab-windows'
+        static_configs:
+          - targets: ['192.168.5.26:9182']
+            labels: {hostname: 'winsrv02'}
