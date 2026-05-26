@@ -3,12 +3,12 @@ kind: Kustomization
 resources:
   - helmrelease.yml
   - secrets.yml
+generatorOptions:
+  disableNameSuffixHashing: true
+  labels:
+    grafana_dashboard: "1"
 configMapGenerator:
   - name: homelab-overview-dashboard
     namespace: monitoring
     files:
       - homelab-overview.json=dashboards/homelab-overview.json
-    options:
-      labels:
-        grafana_dashboard: "1"
-      disableNameSuffixHashing: true
