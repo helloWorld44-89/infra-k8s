@@ -47,7 +47,7 @@
       "gridPos": {"h": 7, "w": 12, "x": 12, "y": 1},
       "targets": [
         {
-          "expr": "(node_memory_MemTotal_bytes{job=\"node-exporter\"} - node_memory_MemAvailable_bytes{job=\"node-exporter\"}) / node_memory_MemTotal_bytes{job=\"node-exporter\"} * 100",
+          "expr": "(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100",
           "legendFormat": "{{instance}}",
           "refId": "A"
         }
@@ -74,7 +74,7 @@
       "gridPos": {"h": 7, "w": 24, "x": 0, "y": 8},
       "targets": [
         {
-          "expr": "(node_filesystem_size_bytes{job=\"node-exporter\", fstype!~\"tmpfs|overlay\"} - node_filesystem_avail_bytes{job=\"node-exporter\", fstype!~\"tmpfs|overlay\"}) / node_filesystem_size_bytes{job=\"node-exporter\", fstype!~\"tmpfs|overlay\"} * 100",
+          "expr": "(node_filesystem_size_bytes{fstype!~\"tmpfs|overlay\"} - node_filesystem_avail_bytes{fstype!~\"tmpfs|overlay\"}) / node_filesystem_size_bytes{fstype!~\"tmpfs|overlay\"} * 100",
           "legendFormat": "{{instance}} {{mountpoint}}",
           "refId": "A"
         }
@@ -107,7 +107,7 @@
       "gridPos": {"h": 4, "w": 8, "x": 0, "y": 16},
       "targets": [
         {
-          "expr": "count(kube_pod_status_phase{job=\"kube-state-metrics\", phase=\"Running\"})",
+          "expr": "count(kube_pod_status_phase{phase=\"Running\"})",
           "refId": "A"
         }
       ],
@@ -126,7 +126,7 @@
       "gridPos": {"h": 4, "w": 8, "x": 8, "y": 16},
       "targets": [
         {
-          "expr": "sum(kube_pod_status_phase{job=\"kube-state-metrics\", phase=\"Pending\"})",
+          "expr": "sum(kube_pod_status_phase{phase=\"Pending\"})",
           "refId": "A"
         }
       ],
@@ -152,7 +152,7 @@
       "gridPos": {"h": 4, "w": 8, "x": 16, "y": 16},
       "targets": [
         {
-          "expr": "sum(kube_pod_container_status_restarts_total{job=\"kube-state-metrics\"}) by (namespace, pod)",
+          "expr": "sum(kube_pod_container_status_restarts_total) by (namespace, pod)",
           "refId": "A"
         }
       ],
@@ -184,12 +184,12 @@
       "gridPos": {"h": 7, "w": 12, "x": 0, "y": 21},
       "targets": [
         {
-          "expr": "sum(kube_node_status_capacity{job=\"kube-state-metrics\", resource=\"cpu\"})",
+          "expr": "sum(kube_node_status_capacity{resource=\"cpu\"})",
           "legendFormat": "Total CPU",
           "refId": "A"
         },
         {
-          "expr": "sum(kube_node_status_allocatable{job=\"kube-state-metrics\", resource=\"cpu\"})",
+          "expr": "sum(kube_node_status_allocatable{resource=\"cpu\"})",
           "legendFormat": "Allocatable CPU",
           "refId": "B"
         }
@@ -203,12 +203,12 @@
       "gridPos": {"h": 7, "w": 12, "x": 12, "y": 21},
       "targets": [
         {
-          "expr": "sum(kube_node_status_capacity{job=\"kube-state-metrics\", resource=\"memory\"})",
+          "expr": "sum(kube_node_status_capacity{resource=\"memory\"})",
           "legendFormat": "Total Memory",
           "refId": "A"
         },
         {
-          "expr": "sum(kube_node_status_allocatable{job=\"kube-state-metrics\", resource=\"memory\"})",
+          "expr": "sum(kube_node_status_allocatable{resource=\"memory\"})",
           "legendFormat": "Allocatable Memory",
           "refId": "B"
         }
@@ -228,7 +228,7 @@
       "gridPos": {"h": 4, "w": 8, "x": 0, "y": 29},
       "targets": [
         {
-          "expr": "up{job=\"apiserver\"}",
+          "expr": "up{job=\"kubernetes-apiservers\"}",
           "refId": "A"
         }
       ],
@@ -253,7 +253,7 @@
       "gridPos": {"h": 4, "w": 8, "x": 8, "y": 29},
       "targets": [
         {
-          "expr": "up{job=\"coredns\"}",
+          "expr": "kube_deployment_status_replicas_available{namespace=\"kube-system\", deployment=\"coredns\"}",
           "refId": "A"
         }
       ],
@@ -272,13 +272,13 @@
     },
     {
       "id": 15,
-      "title": "Scheduler Status",
+      "title": "Nodes Ready",
       "type": "stat",
       "datasource": {"type": "prometheus", "uid": "prometheus"},
       "gridPos": {"h": 4, "w": 8, "x": 16, "y": 29},
       "targets": [
         {
-          "expr": "up{job=\"kube-scheduler\"}",
+          "expr": "count(kube_node_status_condition{condition=\"Ready\", status=\"true\"})",
           "refId": "A"
         }
       ],
@@ -289,7 +289,8 @@
           "thresholds": {
             "steps": [
               {"color": "red", "value": 0},
-              {"color": "green", "value": 1}
+              {"color": "yellow", "value": 1},
+              {"color": "green", "value": 3}
             ]
           }
         }
@@ -341,12 +342,12 @@
       "gridPos": {"h": 7, "w": 24, "x": 0, "y": 42},
       "targets": [
         {
-          "expr": "rate(node_network_transmit_bytes_total{job=\"node-exporter\"}[5m])",
+          "expr": "rate(node_network_transmit_bytes_total[5m])",
           "legendFormat": "{{instance}} TX",
           "refId": "A"
         },
         {
-          "expr": "rate(node_network_receive_bytes_total{job=\"node-exporter\"}[5m])",
+          "expr": "rate(node_network_receive_bytes_total[5m])",
           "legendFormat": "{{instance}} RX",
           "refId": "B"
         }
