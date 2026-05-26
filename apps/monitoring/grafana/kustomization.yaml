@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - helmrelease.yml
+  - secrets.yml
+configMapGenerator:
+  - name: homelab-overview-dashboard
+    namespace: monitoring
+    files:
+      - homelab-overview.json=dashboards/homelab-overview.json
+    options:
+      labels:
+        grafana_dashboard: "1"
+      disableNameSuffixHashing: true
