@@ -4,7 +4,6 @@ resources:
   - helmrelease.yml
   - secrets.yml
 generatorOptions:
-  disableNameSuffixHashing: true
   labels:
     grafana_dashboard: "1"
 configMapGenerator:
