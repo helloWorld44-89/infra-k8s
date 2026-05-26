@@ -24,11 +24,12 @@ data:
         {
           "id": 2,
           "title": "CPU Usage per Node",
-          "type": "graph",
+          "type": "timeseries",
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
           "gridPos": {"h": 7, "w": 12, "x": 0, "y": 1},
           "targets": [
             {
-              "expr": "100 - (avg by (instance) (rate(node_cpu_seconds_total{mode=\\"idle\\"}[5m])) * 100)",
+              "expr": "100 - (avg by (instance) (rate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100)",
               "legendFormat": "{{instance}}",
               "refId": "A"
             }
@@ -50,11 +51,12 @@ data:
         {
           "id": 3,
           "title": "Memory Usage per Node",
-          "type": "graph",
+          "type": "timeseries",
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
           "gridPos": {"h": 7, "w": 12, "x": 12, "y": 1},
           "targets": [
             {
-              "expr": "(node_memory_MemTotal_bytes{job=\\"node-exporter\\"} - node_memory_MemAvailable_bytes{job=\\"node-exporter\\"}) / node_memory_MemTotal_bytes{job=\\"node-exporter\\"} * 100",
+              "expr": "(node_memory_MemTotal_bytes{job=\"node-exporter\"} - node_memory_MemAvailable_bytes{job=\"node-exporter\"}) / node_memory_MemTotal_bytes{job=\"node-exporter\"} * 100",
               "legendFormat": "{{instance}}",
               "refId": "A"
             }
@@ -76,11 +78,12 @@ data:
         {
           "id": 4,
           "title": "Disk Usage per Node",
-          "type": "graph",
+          "type": "timeseries",
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
           "gridPos": {"h": 7, "w": 24, "x": 0, "y": 8},
           "targets": [
             {
-              "expr": "(node_filesystem_size_bytes{job=\\"node-exporter\\", fstype!~\\"tmpfs|overlay\\"} - node_filesystem_avail_bytes{job=\\"node-exporter\\", fstype!~\\"tmpfs|overlay\\"}) / node_filesystem_size_bytes{job=\\"node-exporter\\", fstype!~\\"tmpfs|overlay\\"} * 100",
+              "expr": "(node_filesystem_size_bytes{job=\"node-exporter\", fstype!~\"tmpfs|overlay\"} - node_filesystem_avail_bytes{job=\"node-exporter\", fstype!~\"tmpfs|overlay\"}) / node_filesystem_size_bytes{job=\"node-exporter\", fstype!~\"tmpfs|overlay\"} * 100",
               "legendFormat": "{{instance}} {{mountpoint}}",
               "refId": "A"
             }
@@ -109,10 +112,11 @@ data:
           "id": 6,
           "title": "Running Pods",
           "type": "stat",
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
           "gridPos": {"h": 4, "w": 8, "x": 0, "y": 16},
           "targets": [
             {
-              "expr": "count(kube_pod_status_phase{job=\\"kube-state-metrics\\", phase=\\"Running\\"})",
+              "expr": "count(kube_pod_status_phase{job=\"kube-state-metrics\", phase=\"Running\"})",
               "refId": "A"
             }
           ],
@@ -127,10 +131,11 @@ data:
           "id": 7,
           "title": "Pending Pods",
           "type": "stat",
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
           "gridPos": {"h": 4, "w": 8, "x": 8, "y": 16},
           "targets": [
             {
-              "expr": "sum(kube_pod_status_phase{job=\\"kube-state-metrics\\", phase=\\"Pending\\"})",
+              "expr": "sum(kube_pod_status_phase{job=\"kube-state-metrics\", phase=\"Pending\"})",
               "refId": "A"
             }
           ],
@@ -152,10 +157,11 @@ data:
           "id": 8,
           "title": "CrashLooping Pods",
           "type": "stat",
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
           "gridPos": {"h": 4, "w": 8, "x": 16, "y": 16},
           "targets": [
             {
-              "expr": "sum(kube_pod_container_status_restarts_total{job=\\"kube-state-metrics\\"}) by (namespace, pod)",
+              "expr": "sum(kube_pod_container_status_restarts_total{job=\"kube-state-metrics\"}) by (namespace, pod)",
               "refId": "A"
             }
           ],
@@ -183,15 +189,16 @@ data:
           "id": 10,
           "title": "CPU Allocated vs Total",
           "type": "barchart",
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
           "gridPos": {"h": 7, "w": 12, "x": 0, "y": 21},
           "targets": [
             {
-              "expr": "sum(kube_node_status_capacity{job=\\"kube-state-metrics\\", resource=\\"cpu\\"})",
+              "expr": "sum(kube_node_status_capacity{job=\"kube-state-metrics\", resource=\"cpu\"})",
               "legendFormat": "Total CPU",
               "refId": "A"
             },
             {
-              "expr": "sum(kube_node_status_allocatable{job=\\"kube-state-metrics\\", resource=\\"cpu\\"})",
+              "expr": "sum(kube_node_status_allocatable{job=\"kube-state-metrics\", resource=\"cpu\"})",
               "legendFormat": "Allocatable CPU",
               "refId": "B"
             }
@@ -201,15 +208,16 @@ data:
           "id": 11,
           "title": "Memory Allocated vs Total",
           "type": "barchart",
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
           "gridPos": {"h": 7, "w": 12, "x": 12, "y": 21},
           "targets": [
             {
-              "expr": "sum(kube_node_status_capacity{job=\\"kube-state-metrics\\", resource=\\"memory\\"})",
+              "expr": "sum(kube_node_status_capacity{job=\"kube-state-metrics\", resource=\"memory\"})",
               "legendFormat": "Total Memory",
               "refId": "A"
             },
             {
-              "expr": "sum(kube_node_status_allocatable{job=\\"kube-state-metrics\\", resource=\\"memory\\"})",
+              "expr": "sum(kube_node_status_allocatable{job=\"kube-state-metrics\", resource=\"memory\"})",
               "legendFormat": "Allocatable Memory",
               "refId": "B"
             }
@@ -225,10 +233,11 @@ data:
           "id": 13,
           "title": "API Server Status",
           "type": "stat",
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
           "gridPos": {"h": 4, "w": 8, "x": 0, "y": 29},
           "targets": [
             {
-              "expr": "kube_api_server_running",
+              "expr": "up{job=\"apiserver\"}",
               "refId": "A"
             }
           ],
@@ -249,10 +258,11 @@ data:
           "id": 14,
           "title": "CoreDNS Status",
           "type": "stat",
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
           "gridPos": {"h": 4, "w": 8, "x": 8, "y": 29},
           "targets": [
             {
-              "expr": "kube_dns_up",
+              "expr": "up{job=\"coredns\"}",
               "refId": "A"
             }
           ],
@@ -273,10 +283,11 @@ data:
           "id": 15,
           "title": "Scheduler Status",
           "type": "stat",
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
           "gridPos": {"h": 4, "w": 8, "x": 16, "y": 29},
           "targets": [
             {
-              "expr": "kube_scheduler_status_health",
+              "expr": "up{job=\"kube-scheduler\"}",
               "refId": "A"
             }
           ],
@@ -303,6 +314,7 @@ data:
           "id": 17,
           "title": "Flux Source Status",
           "type": "table",
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
           "gridPos": {"h": 7, "w": 12, "x": 0, "y": 34},
           "targets": [
             {
@@ -315,6 +327,7 @@ data:
           "id": 18,
           "title": "Flux Sync Status",
           "type": "table",
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
           "gridPos": {"h": 7, "w": 12, "x": 12, "y": 34},
           "targets": [
             {
@@ -332,16 +345,17 @@ data:
         {
           "id": 20,
           "title": "Network I/O per Node",
-          "type": "graph",
+          "type": "timeseries",
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
           "gridPos": {"h": 7, "w": 24, "x": 0, "y": 42},
           "targets": [
             {
-              "expr": "rate(node_network_transmit_bytes_total{job=\\"node-exporter\\"}[5m])",
+              "expr": "rate(node_network_transmit_bytes_total{job=\"node-exporter\"}[5m])",
               "legendFormat": "{{instance}} TX",
               "refId": "A"
             },
             {
-              "expr": "rate(node_network_receive_bytes_total{job=\\"node-exporter\\"}[5m])",
+              "expr": "rate(node_network_receive_bytes_total{job=\"node-exporter\"}[5m])",
               "legendFormat": "{{instance}} RX",
               "refId": "B"
             }
@@ -357,10 +371,11 @@ data:
           "id": 22,
           "title": "Top 5 CPU Consuming Pods",
           "type": "table",
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
           "gridPos": {"h": 8, "w": 12, "x": 0, "y": 50},
           "targets": [
             {
-              "expr": "topk(5, sum(rate(container_cpu_usage_seconds_total{container!~\\"POD\\|pause.*\\"}[5m])) by (pod, namespace))",
+              "expr": "topk(5, sum(rate(container_cpu_usage_seconds_total{container!~\"POD|pause.*\"}[5m])) by (pod, namespace))",
               "refId": "A"
             }
           ]
@@ -369,10 +384,11 @@ data:
           "id": 23,
           "title": "Top 5 Memory Consuming Pods",
           "type": "table",
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
           "gridPos": {"h": 8, "w": 12, "x": 12, "y": 50},
           "targets": [
             {
-              "expr": "topk(5, sum(container_memory_working_set_bytes{container!~\\"POD\\|pause.*\\"}) by (pod, namespace))",
+              "expr": "topk(5, sum(container_memory_working_set_bytes{container!~\"POD|pause.*\"}) by (pod, namespace))",
               "refId": "A"
             }
           ]
