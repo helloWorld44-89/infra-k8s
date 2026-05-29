@@ -50,3 +50,7 @@ spec:
         existingClaim: downloads-pvc
         globalMounts:
           - path: /downloads
+      movies:
+        existingClaim: movies-pvc
+        globalMounts:
+          - path: /movies
