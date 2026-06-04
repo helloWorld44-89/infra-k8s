@@ -20,7 +20,7 @@ spec:
           app:
             image:
               repository: dbeaver/cloudbeaver
-              tag: "latest"
+              tag: "25.0.1"
             env:
               CB_ADMIN_NAME:
                 valueFrom:
