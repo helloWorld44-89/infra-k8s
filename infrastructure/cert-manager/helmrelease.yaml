@@ -27,8 +27,7 @@ spec:
     prometheus:
       enabled: true
       servicemonitor:
-        enabled: true
-        namespace: monitoring
+        enabled: false
     # Webhook
     webhook:
       timeout: 10s
