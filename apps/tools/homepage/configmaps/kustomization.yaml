@@ -1,10 +1,10 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - configmaps/services.yaml
-  - configmaps/settings.yaml
-  - configmaps/widgets.yaml
-  - configmaps/bookmarks.yaml
-  - configmaps/docker.yaml
-  - configmaps/kubernetes.yaml
-  - configmaps/proxmox.yaml
+  - services.yaml
+  - settings.yaml
+  - widgets.yaml
+  - bookmarks.yaml
+  - docker.yaml
+  - kubernetes.yaml
+  - proxmox.yaml
