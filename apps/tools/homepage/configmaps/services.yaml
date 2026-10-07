@@ -156,6 +156,15 @@ data:
             icon: vaultwarden.png
             href: https://vault.conderhome.xyz
             ping: vault.conderhome.xyz
+        - Immich:
+            icon: immich.png
+            href: https://immich.conderhome.xyz
+            ping: https://immich.conderhome.xyz
+            widget:
+              type: immich
+              url: http://192.168.5.40:2283
+              key: tDgxMC9n4rN3aOO6KXFliVLKUgvKKzU6q4cx8TnU
+              version: 2 # optional, default is 1
         - NexusTale:
             href: https://nexustale.conderhome.xyz
             ping: https://nexustale.conderhome.xyz
