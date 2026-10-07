@@ -31,12 +31,47 @@ spec:
             port: 3000
     persistence:
       config:
-        type: persistentVolumeClaim
-        storageClass: "nfs"
-        accessMode: ReadWriteOnce
-        size: 50Mi
+        type: configMap
+        name: homepage-services
         globalMounts:
-          - path: /app/config
+          - path: /app/config/services.yaml
+            subPath: services.yaml
+      settings:
+        type: configMap
+        name: homepage-settings
+        globalMounts:
+          - path: /app/config/settings.yaml
+            subPath: settings.yaml
+      widgets:
+        type: configMap
+        name: homepage-widgets
+        globalMounts:
+          - path: /app/config/widgets.yaml
+            subPath: widgets.yaml
+      bookmarks:
+        type: configMap
+        name: homepage-bookmarks
+        globalMounts:
+          - path: /app/config/bookmarks.yaml
+            subPath: bookmarks.yaml
+      docker:
+        type: configMap
+        name: homepage-docker
+        globalMounts:
+          - path: /app/config/docker.yaml
+            subPath: docker.yaml
+      kubernetes:
+        type: configMap
+        name: homepage-kubernetes
+        globalMounts:
+          - path: /app/config/kubernetes.yaml
+            subPath: kubernetes.yaml
+      proxmox:
+        type: configMap
+        name: homepage-proxmox
+        globalMounts:
+          - path: /app/config/proxmox.yaml
+            subPath: proxmox.yaml
       logs:
         type: emptyDir
         globalMounts:

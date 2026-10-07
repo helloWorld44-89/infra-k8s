@@ -4,3 +4,4 @@ resources:
   - cloudbeaver
   - homepage
   - mysql
+  - homepage/configmaps

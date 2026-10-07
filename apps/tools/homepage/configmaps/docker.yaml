@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homepage-docker
+  namespace: tools
+  labels:
+    app.kubernetes.io/name: homepage
+data:
+  docker.yaml: |
+    ---
+    # For configuration options and examples, please see:
+    # https://gethomepage.dev/configs/docker/
+
+    # my-docker:
+    #   host: 127.0.0.1
+    #   port: 2375
+
+    # my-docker:
+    #   socket: /var/run/docker.sock

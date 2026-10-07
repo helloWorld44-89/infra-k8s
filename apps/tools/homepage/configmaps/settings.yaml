@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homepage-settings
+  namespace: tools
+  labels:
+    app.kubernetes.io/name: homepage
+data:
+  settings.yaml: |
+    ---
+    # For configuration options and examples, please see:
+    # https://gethomepage.dev/configs/settings/
+
+    title: Conder Home Homelab
+    background: https://images.unsplash.com/photo-1498550744921-75f79806b8a7?q=80&w=2400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D
+    cardBlur: md # sm, "", md, etc... see https://tailwindcss.com/docs/backdrop-blur
+    layout:
+      media:
+        style: row
+        column: 4
+
+    providers:
+      openweathermap: openweathermapapikey
+      weatherapi: weatherapiapikey
