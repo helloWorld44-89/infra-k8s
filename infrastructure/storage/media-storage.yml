@@ -13,20 +13,6 @@ spec:
     path: /mnt/ConderNAS/Plex/Downloads
 ---
 apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: downloads-pvc
-  namespace: tools
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: ""
-  volumeName: downloads-pv
-  resources:
-    requests:
-      storage: 500Gi
----
-apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: movies-pv
@@ -41,20 +27,6 @@ spec:
     path: /mnt/ConderNAS/Plex/Movies
 ---
 apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: movies-pvc
-  namespace: tools
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: ""
-  volumeName: movies-pv
-  resources:
-    requests:
-      storage: 500Gi
----
-apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: tv-pv
@@ -67,20 +39,6 @@ spec:
   nfs:
     server: 192.168.5.18
     path: /mnt/ConderNAS/Plex/TV Shows
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: tv-pvc
-  namespace: tools
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: ""
-  volumeName: tv-pv
-  resources:
-    requests:
-      storage: 500Gi
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -109,17 +67,3 @@ spec:
   nfs:
     server: 192.168.5.18
     path: /mnt/ConderNAS/phoneMedia
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: audiobooks-pvc
-  namespace: tools
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: ""
-  volumeName: audiobooks-pv
-  resources:
-    requests:
-      storage: 500Gi
