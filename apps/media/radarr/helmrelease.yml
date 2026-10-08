@@ -32,6 +32,8 @@ spec:
     ingress:
       radarr:
         className: traefik
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-prod
         hosts:
           - host: radarr.conderhome.xyz
             paths:
@@ -40,6 +42,10 @@ spec:
                 service:
                   identifier: radarr
                   port: http
+        tls:
+          - hosts:
+              - radarr.conderhome.xyz
+            secretName: radarr-tls
     persistence:
       config:
         accessMode: ReadWriteOnce

@@ -32,6 +32,8 @@ spec:
     ingress:
       sonarr:
         className: traefik
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-prod
         hosts:
           - host: sonarr.conderhome.xyz
             paths:
@@ -40,6 +42,10 @@ spec:
                 service:
                   identifier: sonarr
                   port: http
+        tls:
+          - hosts:
+              - sonarr.conderhome.xyz
+            secretName: sonarr-tls
     persistence:
       config:
         accessMode: ReadWriteOnce
