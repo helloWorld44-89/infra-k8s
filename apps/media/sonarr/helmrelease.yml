@@ -53,4 +53,4 @@ spec:
       tv:
         existingClaim: tv-pvc
         globalMounts:
-          - path: /tv
+          - path: /tv/TV Shows
