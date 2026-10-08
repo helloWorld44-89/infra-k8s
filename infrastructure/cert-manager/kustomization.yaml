@@ -2,5 +2,10 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - helmrelease.yaml
-  - cloudflare-secret.yaml
   - clusterissuers.yaml
+  - wildcard-certificate.yaml
+# cloudflare-api-token Secret is intentionally NOT managed by Flux/GitOps —
+# it must hold a real Cloudflare API token, which must never be committed to git
+# in plaintext. Create/update it manually on the cluster:
+#   kubectl -n cert-manager create secret generic cloudflare-api-token \
+#     --from-literal=api-token='<token>' --dry-run=client -o yaml | kubectl apply -f -

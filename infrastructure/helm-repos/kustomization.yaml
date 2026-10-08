@@ -5,3 +5,4 @@ resources:
   - grafana.yaml
   - prometheus-community.yaml
   - jetstack.yaml
+  - emberstack.yaml

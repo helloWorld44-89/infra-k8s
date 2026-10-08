@@ -39,8 +39,6 @@ spec:
     ingress:
       prowlarr:
         className: traefik
-        annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-prod
         hosts:
           - host: prowlarr.conderhome.xyz
             paths:
@@ -52,7 +50,7 @@ spec:
         tls:
           - hosts:
               - prowlarr.conderhome.xyz
-            secretName: prowlarr-tls
+            secretName: wildcard-conderhome-xyz-tls
     persistence:
       config:
         accessMode: ReadWriteOnce
