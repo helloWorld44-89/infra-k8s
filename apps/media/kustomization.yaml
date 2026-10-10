@@ -6,4 +6,5 @@ resources:
   - sonarr
   - prowlarr
   - flaresolverr
+  - immich-redis
   - immich

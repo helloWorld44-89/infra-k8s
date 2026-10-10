@@ -31,12 +31,8 @@ spec:
           secretKeyRef:
             name: immich-db-credentials
             key: password
-      REDIS_HOSTNAME: '{{ printf "%s-redis-master" .Release.Name }}'
+      REDIS_HOSTNAME: immich-redis.media.svc.cluster.local
       IMMICH_MACHINE_LEARNING_URL: '{{ printf "http://%s-machine-learning:3003" .Release.Name }}'
-
-    redis:
-      enabled: true
-      architecture: standalone
 
     immich:
       persistence:
