@@ -25,12 +25,34 @@ spec:
           - prometheus.conderhome.xyz
         paths:
           - /
+      resources:
+        requests:
+          cpu: 100m
+          memory: 512Mi
+        limits:
+          cpu: 1000m
+          memory: 1536Mi
     alertmanager:
       enabled: false
     prometheus-pushgateway:
       enabled: false
     kube-state-metrics:
       enabled: true
+      resources:
+        requests:
+          cpu: 20m
+          memory: 32Mi
+        limits:
+          cpu: 200m
+          memory: 128Mi
+    prometheus-node-exporter:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 32Mi
+        limits:
+          cpu: 100m
+          memory: 64Mi
     extraScrapeConfigs: |
       - job_name: 'homelab-proxmox'
         static_configs:

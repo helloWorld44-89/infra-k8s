@@ -23,6 +23,13 @@ spec:
               tag: 2.9.1
             env:
               TZ: America/Chicago
+            resources:
+              requests:
+                cpu: 20m
+                memory: 64Mi
+              limits:
+                cpu: 300m
+                memory: 256Mi
     service:
       loki:
         controller: loki
