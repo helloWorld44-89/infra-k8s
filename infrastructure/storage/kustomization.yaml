@@ -4,3 +4,4 @@ resources:
   - nfs-storageclass.yaml
   - nfs-provisioner.yaml
   - media-storage.yml
+  - shared-postgres-cluster.yaml

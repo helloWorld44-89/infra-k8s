@@ -1,0 +1,39 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: shared-postgres
+  namespace: databases
+spec:
+  instances: 1
+  imageName: tensorchord/cloudnative-vectorchord:16
+
+  postgresql:
+    shared_preload_libraries:
+      - "vchord.so"
+
+  bootstrap:
+    initdb:
+      database: nexustale
+      owner: nexustale
+      secret:
+        name: nexustale-db-credentials
+
+  storage:
+    storageClass: local-path
+    size: 20Gi
+
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: 2000m
+      memory: 2048Mi
+
+# nexustale-db-credentials Secret is intentionally NOT managed by Flux/GitOps —
+# CNPG's bootstrap.initdb will auto-generate it if it doesn't already exist,
+# or create it manually before applying this Cluster:
+#   kubectl -n databases create secret generic nexustale-db-credentials \
+#     --type=kubernetes.io/basic-auth \
+#     --from-literal=username=nexustale \
+#     --from-literal=password="$(openssl rand -base64 24)"
