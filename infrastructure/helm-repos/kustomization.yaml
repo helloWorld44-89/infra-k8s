@@ -6,3 +6,4 @@ resources:
   - prometheus-community.yaml
   - jetstack.yaml
   - emberstack.yaml
+  - cnpg.yaml
