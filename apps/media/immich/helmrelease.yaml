@@ -46,7 +46,20 @@ spec:
     server:
       ingress:
         main:
-          enabled: false
+          enabled: true
+          className: traefik
+          hosts:
+            - host: immich.conderhome.xyz
+              paths:
+                - path: /
+                  pathType: Prefix
+                  service:
+                    identifier: main
+                    port: http
+          tls:
+            - hosts:
+                - immich.conderhome.xyz
+              secretName: wildcard-conderhome-xyz-tls
 
     machine-learning:
       enabled: true
