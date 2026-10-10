@@ -162,7 +162,7 @@ data:
             ping: https://immich.conderhome.xyz
             widget:
               type: immich
-              url: http://192.168.5.40:2283
+              url: https://immich.conderhome.xyz
               key: tDgxMC9n4rN3aOO6KXFliVLKUgvKKzU6q4cx8TnU
               version: 2 # optional, default is 1
         - NexusTale:
