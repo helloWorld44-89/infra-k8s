@@ -67,3 +67,17 @@ spec:
   nfs:
     server: 192.168.5.18
     path: /mnt/ConderNAS/phoneMedia
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: immich-library-pv
+spec:
+  capacity:
+    storage: 1Ti
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    server: 192.168.5.18
+    path: /mnt/ConderNAS/phoneMedia/Immich

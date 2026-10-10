@@ -67,3 +67,17 @@ spec:
   resources:
     requests:
       storage: 1Ti
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: immich-library-pvc
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  volumeName: immich-library-pv
+  resources:
+    requests:
+      storage: 1Ti
