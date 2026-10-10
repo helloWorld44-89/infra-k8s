@@ -40,6 +40,9 @@ spec:
         library:
           existingClaim: immich-library-pvc
 
+    valkey:
+      enabled: true
+
     server:
       ingress:
         main:
