@@ -38,29 +38,29 @@ data:
             href: http://readmeabook.conderhome.xyz
         - Radarr:
             icon: radarr.png
-            href: http://192.168.5.40:7878
-            ping: http://192.168.5.40:7878
+            href: https://radarr.conderhome.xyz
+            ping: https://radarr.conderhome.xyz
             widget:
               type: radarr
-              url: http://192.168.5.40:7878
+              url: https://radarr.conderhome.xyz
               key: 734410a0098a45b4bdfe80cc9c4bda09
               enableQueue: true # optional, defaults to false
         - Sonarr:
             icon: sonarr.png
-            href: http://192.168.5.40:8989
-            ping: http://192.168.5.40:8989
+            href: https://sonarr.conderhome.xyz
+            ping: https://sonarr.conderhome.xyz
             widget:
               type: sonarr
-              url: http://192.168.5.40:8989
+              url: https://sonarr.conderhome.xyz
               key: 3db2b298f4754f2bbc1e25d7ab22d338
               enableQueue: true # optional, defaults to false
         - Prowlarr:
             icon: prowlarr.png
-            href: http://192.168.5.40:9696
-            ping: http://192.168.5.40:9696
+            href: https://prowlarr.conderhome.xyz
+            ping: https://prowlarr.conderhome.xyz
             widget:
               type: prowlarr
-              url: http://192.168.5.40:9696
+              url: https://prowlarr.conderhome.xyz
               key: e094e354ccec4071b825889479aaa827
         - Qbit:
             icon: qbittorrent.png
