@@ -1,0 +1,42 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: flaresolverr
+  namespace: media
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: app-template
+      version: "3.x"
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  values:
+    controllers:
+      flaresolverr:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/flaresolverr/flaresolverr
+              tag: latest
+            env:
+              LOG_LEVEL: info
+              LOG_FILE: none
+              LOG_HTML: "false"
+              CAPTCHA_SOLVER: none
+              TZ: Europe/London
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                cpu: 1000m
+                memory: 1024Mi
+    service:
+      flaresolverr:
+        controller: flaresolverr
+        ports:
+          http:
+            port: 8191
