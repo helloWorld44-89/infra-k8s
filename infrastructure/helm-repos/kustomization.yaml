@@ -7,3 +7,4 @@ resources:
   - jetstack.yaml
   - emberstack.yaml
   - cnpg.yaml
+  - immich-charts.yaml
