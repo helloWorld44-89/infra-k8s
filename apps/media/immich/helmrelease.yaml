@@ -56,4 +56,3 @@ spec:
       persistence:
         cache:
           enabled: true
-          size: 10Gi
