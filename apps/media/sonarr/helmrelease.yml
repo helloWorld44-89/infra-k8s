@@ -20,7 +20,7 @@ spec:
           app:
             image:
               repository: linuxserver/sonarr
-              tag: latest
+              tag: 4.0.20 # {"$imagepolicy": "flux-system:sonarr:tag"}
             env:
               TZ: America/Chicago
     service:

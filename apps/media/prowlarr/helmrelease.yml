@@ -20,7 +20,7 @@ spec:
           app:
             image:
               repository: linuxserver/prowlarr
-              tag: latest
+              tag: 2.6.5 # {"$imagepolicy": "flux-system:prowlarr:tag"}
             env:
               TZ: America/Chicago
             resources:
