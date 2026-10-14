@@ -52,7 +52,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   nfs:
     server: 192.168.5.18
-    path: /mnt/ConderNAS/Plex/Audiobooks
+    path: /mnt/ConderNAS/Plex/AudioBooks
 ---
 apiVersion: v1
 kind: PersistentVolume
