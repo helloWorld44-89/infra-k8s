@@ -5,3 +5,4 @@ resources:
   - nfs-provisioner.yaml
   - media-storage.yml
   - shared-postgres-cluster.yaml
+  - grafana-postgres-cluster.yaml

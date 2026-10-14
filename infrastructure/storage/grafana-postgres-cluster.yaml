@@ -1,0 +1,34 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: grafana-postgres
+  namespace: databases
+spec:
+  instances: 1
+
+  bootstrap:
+    initdb:
+      database: grafana
+      owner: grafana
+      secret:
+        name: grafana-db-credentials
+
+  storage:
+    storageClass: local-path
+    size: 2Gi
+
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+# grafana-db-credentials Secret is intentionally NOT managed by Flux/GitOps —
+# CNPG's bootstrap.initdb will auto-generate it if it doesn't already exist,
+# or create it manually before applying this Cluster:
+#   kubectl -n databases create secret generic grafana-db-credentials \
+#     --type=kubernetes.io/basic-auth \
+#     --from-literal=username=grafana \
+#     --from-literal=password="$(openssl rand -base64 24)"
