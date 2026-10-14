@@ -64,6 +64,10 @@ spec:
         - grafana.conderhome.xyz
       paths:
         - /
+      tls:
+        - hosts:
+            - grafana.conderhome.xyz
+          secretName: wildcard-conderhome-xyz-tls
     resources:
       requests:
         cpu: 50m
