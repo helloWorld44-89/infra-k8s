@@ -73,16 +73,16 @@ data:
               enableLeechProgress: true # optional, defaults to false
               enableLeechSize: true # optional, defaults to false
     - Network:
-        # - UNIFI:
-        #     icon: unifi.png
-        #     href: http://192.168.5.1
-        #     ping: 192.168.5.1
-        #     widget:
-        #       type: unifi
-        #       url: https://192.168.5.1
-        #       username: admin
-        #       password: Baseball44
-        #       # key: JbcZXUU-WrNj2XTUBF3mAqNJR2vaF6gl # required if using API key instead of username/password
+        - UNIFI:
+            icon: unifi.png
+            href: http://192.168.5.1
+            ping: 192.168.5.1
+            widget:
+              type: unifi
+              url: https://192.168.5.1
+              username: admin
+              password: Baseball44
+              # key: JbcZXUU-WrNj2XTUBF3mAqNJR2vaF6gl # required if using API key instead of username/password
         - MySpeed:
             icon: myspeed.png
             href: http://192.168.5.120:5216
@@ -211,7 +211,7 @@ data:
             widget:
               type: homeassistant
               url: http://192.168.5.19:8123
-              key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJmYzU2ODFiZWQwYTk0ZjkzYTA1YjdhNDk2MzM4ZmRhNCIsImlhdCI6MTc4NDIzMDQwNiwiZXhwIjoyMDk5NTkwNDA2fQ.f5pknSE1vRNeHoBA5jf--A5jf--Hlla6xTA3okVM6fTTktBVQ
+              key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJmYzU2ODFiZWQwYTk0ZjkzYTA1YjdhNDk2MzM4ZmRhNCIsImlhdCI6MTc4NDIzMDQwNiwiZXhwIjoyMDk5NTkwNDA2fQ.f5pknSE1vRNeHoBA5jf--Hlla6xTA3okVM6fTTktBVQ
               custom:
                 - state: sensor.mts300_temperature
                 - state: sensor.total_energy_today
