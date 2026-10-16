@@ -32,6 +32,15 @@ spec:
         limits:
           cpu: 1000m
           memory: 1536Mi
+      readinessProbe:
+        httpGet:
+          path: /-/ready
+          port: 9090
+        initialDelaySeconds: 30
+        timeoutSeconds: 10  # Increased from default 4s to accommodate NFS-backed WAL replay (observed 8s)
+        periodSeconds: 5
+        successThreshold: 1
+        failureThreshold: 3
     alertmanager:
       enabled: false
     prometheus-pushgateway:
