@@ -197,12 +197,12 @@ data:
               password: Baseball44 # required for local auth
         - Grafana:
             icon: grafana.png
-            href: http://dashboard.conderhome.xyz
+            href: https://grafana.conderhome.xyz
             widget:
               type: grafana
               version: 2 # optional, default is 1
               alerts: grafana # optional, default is grafana
-              url: http://192.168.5.48:3000
+              url: https://grafana.conderhome.xyz
               username: jconder44
               password: Baseball44
         - HomeAssistant:
