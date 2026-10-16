@@ -11,3 +11,23 @@ configMapGenerator:
     namespace: monitoring
     files:
       - homelab-overview.json=dashboards/homelab-overview.json
+  - name: cadvisor-dashboard
+    namespace: monitoring
+    files:
+      - cadvisor-dashboard.json=dashboards/cadvisor-dashboard.json
+  - name: cadvisor-exporter-dashboard
+    namespace: monitoring
+    files:
+      - cadvisor-exporter.json=dashboards/cadvisor-exporter.json
+  - name: node-exporter-full-dashboard
+    namespace: monitoring
+    files:
+      - node-exporter-full.json=dashboards/node-exporter-full.json
+  - name: proxmox-via-prometheus-dashboard
+    namespace: monitoring
+    files:
+      - proxmox-via-prometheus.json=dashboards/proxmox-via-prometheus.json
+  - name: windows-exporter-dashboard
+    namespace: monitoring
+    files:
+      - windows-exporter-dashboard-2024.json=dashboards/windows-exporter-dashboard-2024.json
