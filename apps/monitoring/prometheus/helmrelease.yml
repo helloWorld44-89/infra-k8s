@@ -88,8 +88,6 @@ spec:
             labels: {hostname: 'prod-ubsrv-03'}
           - targets: ['192.168.5.45:9100']
             labels: {hostname: 'dev-ubsrv-01'}
-          - targets: ['192.168.5.48:9100']
-            labels: {hostname: 'prod-debsrv'}
           - targets: ['192.168.5.99:9100']
             labels: {hostname: 'prod-agents-01'}
 
