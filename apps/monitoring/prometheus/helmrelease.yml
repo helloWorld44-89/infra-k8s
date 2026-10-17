@@ -35,24 +35,18 @@ spec:
       # Liveness probe tuned for NFS-backed TSDB: WAL replay takes 6+ minutes after a pod restart.
       # Chart default (30s delay + 3x15s=45s) killed Prometheus before TSDB was ready → false-positive DatasourceNoData alerts.
       # 300s initial delay + 10 failures x 15s = 450s total window (7.5 min) to cover NFS WAL replay.
-      livenessProbe:
-        httpGet:
-          path: /-/healthy
-          port: 9090
-        initialDelaySeconds: 300
-        periodSeconds: 15
-        timeoutSeconds: 10
-        failureThreshold: 10
-        successThreshold: 1
-      readinessProbe:
-        httpGet:
-          path: /-/ready
-          port: 9090
-        initialDelaySeconds: 30
-        timeoutSeconds: 10  # Increased from default 4s to accommodate NFS-backed WAL replay (observed 8s)
-        periodSeconds: 5
-        successThreshold: 1
-        failureThreshold: 3
+      # Note: this chart uses scalar fields (livenessProbeInitialDelay etc), NOT a nested livenessProbe object.
+      livenessProbeInitialDelay: 300
+      livenessProbePeriodSeconds: 15
+      livenessProbeTimeout: 10
+      livenessProbeFailureThreshold: 10
+      livenessProbeSuccessThreshold: 1
+      # Readiness probe: timeout bumped from default 4s (NFS WAL replay takes up to 8s).
+      readinessProbeInitialDelay: 30
+      readinessProbePeriodSeconds: 5
+      readinessProbeTimeout: 10
+      readinessProbeFailureThreshold: 3
+      readinessProbeSuccessThreshold: 1
     alertmanager:
       enabled: false
     prometheus-pushgateway:
