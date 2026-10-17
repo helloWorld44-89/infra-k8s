@@ -32,6 +32,18 @@ spec:
         limits:
           cpu: 1000m
           memory: 1536Mi
+      # Liveness probe tuned for NFS-backed TSDB: WAL replay takes 6+ minutes after a pod restart.
+      # Chart default (30s delay + 3x15s=45s) killed Prometheus before TSDB was ready → false-positive DatasourceNoData alerts.
+      # 300s initial delay + 10 failures x 15s = 450s total window (7.5 min) to cover NFS WAL replay.
+      livenessProbe:
+        httpGet:
+          path: /-/healthy
+          port: 9090
+        initialDelaySeconds: 300
+        periodSeconds: 15
+        timeoutSeconds: 10
+        failureThreshold: 10
+        successThreshold: 1
       readinessProbe:
         httpGet:
           path: /-/ready
