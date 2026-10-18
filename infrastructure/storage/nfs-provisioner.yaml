@@ -64,6 +64,13 @@ spec:
               value: "192.168.5.18"
             - name: NFS_PATH
               value: "/mnt/ConderNAS/k3s"
+          resources:
+            requests:
+              cpu: 20m
+              memory: 32Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
           volumeMounts:
             - name: nfs-client-root
               mountPath: /persistentvolumes
