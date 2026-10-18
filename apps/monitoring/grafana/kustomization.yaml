@@ -31,3 +31,7 @@ configMapGenerator:
     namespace: monitoring
     files:
       - windows-exporter-dashboard-2024.json=dashboards/windows-exporter-dashboard-2024.json
+  - name: alert-ops-dashboard
+    namespace: monitoring
+    files:
+      - alert-ops.json=dashboards/alert-ops.json

@@ -1,0 +1,126 @@
+{
+  "id": null,
+  "uid": "alert-ops",
+  "title": "Alert Ops",
+  "tags": ["homelab", "alerting", "ops"],
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "refresh": "1m",
+  "time": { "from": "now-24h", "to": "now" },
+  "panels": [
+    {
+      "id": 1,
+      "type": "row",
+      "title": "Currently Firing / Recent",
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
+      "panels": []
+    },
+    {
+      "id": 2,
+      "type": "alertlist",
+      "title": "Firing Alerts",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 1 },
+      "options": {
+        "showOptions": "current",
+        "maxItems": 20,
+        "sortOrder": 1,
+        "dashboardAlerts": false,
+        "alertName": "",
+        "alertInstanceLabelFilter": "",
+        "stateFilter": { "firing": true, "pending": true, "noData": false, "normal": false, "error": true },
+        "folder": ""
+      }
+    },
+    {
+      "id": 3,
+      "type": "alertlist",
+      "title": "Recently Resolved (last 24h)",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 1 },
+      "options": {
+        "showOptions": "current",
+        "maxItems": 20,
+        "sortOrder": 1,
+        "dashboardAlerts": false,
+        "stateFilter": { "firing": false, "pending": false, "noData": false, "normal": true, "error": false },
+        "folder": ""
+      }
+    },
+    {
+      "id": 4,
+      "type": "row",
+      "title": "Alert Firing Frequency",
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 9 },
+      "panels": []
+    },
+    {
+      "id": 5,
+      "type": "annolist",
+      "title": "Alert State Changes (last 24h) \u2014 a rule dominating this list needs threshold/for: tuning",
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 10 },
+      "options": {
+        "onlyFromThisDashboard": false,
+        "onlyInTimeRange": true,
+        "tags": [],
+        "limit": 100,
+        "showUser": false,
+        "showTags": true,
+        "showTime": true,
+        "navigateToPanel": false
+      }
+    },
+    {
+      "id": 6,
+      "type": "row",
+      "title": "Workload Health",
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 20 },
+      "panels": []
+    },
+    {
+      "id": 7,
+      "type": "timeseries",
+      "title": "Pod Restarts by Namespace (rate, 15m window)",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 21 },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (namespace) (rate(kube_pod_container_status_restarts_total[15m]) * 900)",
+          "legendFormat": "{{namespace}}"
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "short" }, "overrides": [] }
+    },
+    {
+      "id": 8,
+      "type": "table",
+      "title": "Pending Pods (right now)",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 21 },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "kube_pod_status_phase{phase=\"Pending\"} == 1",
+          "format": "table",
+          "instant": true
+        }
+      ],
+      "transformations": [
+        { "id": "organize", "options": { "excludeByName": { "Time": true, "Value": true, "phase": true } } }
+      ]
+    },
+    {
+      "id": 9,
+      "type": "state-timeline",
+      "title": "Node Readiness",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 6, "w": 24, "x": 0, "y": 29 },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "kube_node_status_condition{condition=\"Ready\"} == 1",
+          "legendFormat": "{{node}} - {{status}}"
+        }
+      ]
+    }
+  ]
+}
