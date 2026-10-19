@@ -18,6 +18,7 @@ spec:
       persistentVolume:
         enabled: true
         size: 5Gi
+      retentionSize: 4GB
       ingress:
         enabled: true
         ingressClassName: traefik
@@ -28,10 +29,10 @@ spec:
       resources:
         requests:
           cpu: 100m
-          memory: 512Mi
+          memory: 1Gi
         limits:
           cpu: 1000m
-          memory: 1536Mi
+          memory: 3Gi
       # Liveness probe tuned for NFS-backed TSDB: WAL replay takes 6+ minutes after a pod restart.
       # Chart default (30s delay + 3x15s=45s) killed Prometheus before TSDB was ready → false-positive DatasourceNoData alerts.
       # 300s initial delay + 10 failures x 15s = 450s total window (7.5 min) to cover NFS WAL replay.
