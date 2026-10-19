@@ -214,8 +214,10 @@ data:
               mappings:
                 - field: ok
                   label: Status
+                  format: text
                 - field: displayVersion
                   label: Version
+                  format: text
         - HomeAssistant:
             icon: home-assistant.png
             href: http://192.168.5.19:8123
