@@ -205,6 +205,17 @@ data:
               url: https://grafana.conderhome.xyz
               username: jconder44
               password: Baseball44
+        - Hermes:
+            icon: si-nousresearch.png
+            href: http://192.168.5.99:9119
+            widget:
+              type: customapi
+              url: http://192.168.5.99:9119/api/health
+              mappings:
+                - field: ok
+                  label: Status
+                - field: displayVersion
+                  label: Version
         - HomeAssistant:
             icon: home-assistant.png
             href: http://192.168.5.19:8123
