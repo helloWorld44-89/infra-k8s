@@ -205,6 +205,9 @@ data:
               url: https://grafana.conderhome.xyz
               username: jconder44
               password: Baseball44
+        - Docs:
+            icon: mkdocs.png
+            href: https://docs.conderhome.xyz
         - Hermes:
             icon: si-nousresearch.png
             href: http://192.168.5.99:9119

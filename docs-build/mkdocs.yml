@@ -1,0 +1,31 @@
+site_name: Homelab Docs
+site_url: https://docs.conderhome.xyz/
+docs_dir: docs
+theme:
+  name: material
+  palette:
+    scheme: slate
+    primary: indigo
+  features:
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+    - content.code.copy
+
+plugins:
+  - search
+
+nav:
+  - Home: README.md
+  - Audiofile:
+      - Architecture: audiofile/architecture.md
+      - API Documentation: audiofile/api-documentation.md
+      - User Guide: audiofile/user-guide.md
+      - Deployment Guide: audiofile/deployment-guide.md
+  - Monitoring:
+      - Monitoring Setup: monitoring/monitoring-setup.md
+  - Proxmox & Ansible (infra repo):
+      - Overview: proxmox-ansible/README.md
+      - Corosync Redundancy: proxmox-ansible/network/corosync-redundancy.md
+      - Runbooks: proxmox-ansible/runbooks-readme.md
+      - Runbook Changelog: proxmox-ansible/runbook-changelog.md
