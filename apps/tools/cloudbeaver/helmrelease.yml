@@ -20,7 +20,7 @@ spec:
           app:
             image:
               repository: dbeaver/cloudbeaver
-              tag: "25.0.1" # {"$imagepolicy": "flux-system:cloudbeaver:tag"}
+              tag: "26.2.3" # {"$imagepolicy": "flux-system:cloudbeaver:tag"}
             env:
               CB_ADMIN_NAME:
                 valueFrom:
