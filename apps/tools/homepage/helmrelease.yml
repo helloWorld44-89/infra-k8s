@@ -20,9 +20,37 @@ spec:
           app:
             image:
               repository: ghcr.io/gethomepage/homepage
-              tag: latest
+              tag: v1.4.5 # {"$imagepolicy": "flux-system:homepage:tag"}
             env:
               HOMEPAGE_ALLOWED_HOSTS: homepage.conderhome.xyz
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 3000
+                  initialDelaySeconds: 20
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 3000
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128Mi
+              limits:
+                cpu: 500m
+                memory: 512Mi
     service:
       app:
         controller: homepage

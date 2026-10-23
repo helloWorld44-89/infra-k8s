@@ -20,13 +20,34 @@ spec:
           app:
             image:
               repository: ghcr.io/flaresolverr/flaresolverr
-              tag: latest
+              tag: v3.5.2 # {"$imagepolicy": "flux-system:flaresolverr:tag"}
             env:
               LOG_LEVEL: info
               LOG_FILE: none
               LOG_HTML: "false"
               CAPTCHA_SOLVER: none
               TZ: Europe/London
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 8191
+                  initialDelaySeconds: 20
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 8191
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
             resources:
               requests:
                 cpu: 100m

@@ -60,3 +60,66 @@ spec:
   policy:
     semver:
       range: ">=0.0.0"
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: flaresolverr
+  namespace: flux-system
+spec:
+  image: ghcr.io/flaresolverr/flaresolverr
+  interval: 24h
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: flaresolverr
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: flaresolverr
+  policy:
+    semver:
+      range: ">=0.0.0"
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: homepage
+  namespace: flux-system
+spec:
+  image: ghcr.io/gethomepage/homepage
+  interval: 24h
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: homepage
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: homepage
+  policy:
+    semver:
+      range: ">=0.0.0"
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: cloudbeaver
+  namespace: flux-system
+spec:
+  image: dbeaver/cloudbeaver
+  interval: 24h
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: cloudbeaver
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: cloudbeaver
+  policy:
+    semver:
+      range: ">=0.0.0"
