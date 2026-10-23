@@ -17,11 +17,63 @@ plugins:
 
 nav:
   - Home: README.md
-  - Audiofile:
-      - Architecture: audiofile/architecture.md
-      - API Documentation: audiofile/api-documentation.md
-      - User Guide: audiofile/user-guide.md
-      - Deployment Guide: audiofile/deployment-guide.md
+  - Media Apps:
+      - Audiofile:
+          - Architecture: audiofile/architecture.md
+          - API Documentation: audiofile/api-documentation.md
+          - User Guide: audiofile/user-guide.md
+          - Deployment Guide: audiofile/deployment-guide.md
+      - Readmeabook:
+          - Architecture: readmeabook/architecture.md
+          - API Documentation: readmeabook/api-documentation.md
+          - User Guide: readmeabook/user-guide.md
+          - Deployment Guide: readmeabook/deployment-guide.md
+      - Immich:
+          - Architecture: immich/architecture.md
+          - API Documentation: immich/api-documentation.md
+          - User Guide: immich/user-guide.md
+          - Deployment Guide: immich/deployment-guide.md
+      - Radarr:
+          - Architecture: radarr/architecture.md
+          - API Documentation: radarr/api-documentation.md
+          - User Guide: radarr/user-guide.md
+          - Deployment Guide: radarr/deployment-guide.md
+      - Sonarr:
+          - Architecture: sonarr/architecture.md
+          - API Documentation: sonarr/api-documentation.md
+          - User Guide: sonarr/user-guide.md
+          - Deployment Guide: sonarr/deployment-guide.md
+      - Prowlarr:
+          - Architecture: prowlarr/architecture.md
+          - API Documentation: prowlarr/api-documentation.md
+          - User Guide: prowlarr/user-guide.md
+          - Deployment Guide: prowlarr/deployment-guide.md
+      - FlareSolverr:
+          - Architecture: flaresolverr/architecture.md
+          - API Documentation: flaresolverr/api-documentation.md
+          - User Guide: flaresolverr/user-guide.md
+          - Deployment Guide: flaresolverr/deployment-guide.md
+  - Tools Apps:
+      - Homepage:
+          - Architecture: homepage/architecture.md
+          - API Documentation: homepage/api-documentation.md
+          - User Guide: homepage/user-guide.md
+          - Deployment Guide: homepage/deployment-guide.md
+      - CloudBeaver:
+          - Architecture: cloudbeaver/architecture.md
+          - API Documentation: cloudbeaver/api-documentation.md
+          - User Guide: cloudbeaver/user-guide.md
+          - Deployment Guide: cloudbeaver/deployment-guide.md
+      - MySQL:
+          - Architecture: mysql/architecture.md
+          - API Documentation: mysql/api-documentation.md
+          - User Guide: mysql/user-guide.md
+          - Deployment Guide: mysql/deployment-guide.md
+      - Docs Site:
+          - Architecture: docs-site/architecture.md
+          - API Documentation: docs-site/api-documentation.md
+          - User Guide: docs-site/user-guide.md
+          - Deployment Guide: docs-site/deployment-guide.md
   - Monitoring:
       - Monitoring Setup: monitoring/monitoring-setup.md
   - Proxmox & Ansible (infra repo):
