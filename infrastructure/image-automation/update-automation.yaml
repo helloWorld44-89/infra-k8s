@@ -19,7 +19,7 @@ spec:
       messageTemplate: |
         Auto-update container image tags
 
-        {{range .Updated.Images}}{{println .}}{{end}}
+        {{range .Changed.Changes}}{{print .OldValue}} -> {{println .NewValue}}{{end}}
     push:
       branch: main
   update:
