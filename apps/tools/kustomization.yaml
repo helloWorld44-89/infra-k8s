@@ -5,5 +5,6 @@ resources:
   - docs-site
   - homepage
   - mysql
+  - nebula-sync
   - nexustale
   - open-webui

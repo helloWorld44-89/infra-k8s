@@ -1,0 +1,45 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: nebula-sync
+  namespace: tools
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: app-template
+      version: "3.x"
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  values:
+    controllers:
+      nebula-sync:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/lovelaze/nebula-sync
+              tag: latest
+            env:
+              PRIMARY:
+                valueFrom:
+                  secretKeyRef:
+                    name: nebula-sync-secrets
+                    key: PRIMARY
+              REPLICAS:
+                valueFrom:
+                  secretKeyRef:
+                    name: nebula-sync-secrets
+                    key: REPLICAS
+              FULL_SYNC: "true"
+              RUN_GRAVITY: "true"
+              CRON: "0 * * * *"
+              API_ENABLED: "true"
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                cpu: 200m
+                memory: 128Mi
