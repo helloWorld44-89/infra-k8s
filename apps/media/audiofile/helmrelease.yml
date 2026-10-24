@@ -1,0 +1,126 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: audiofile
+  namespace: media
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: app-template
+      version: "3.x"
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  values:
+    controllers:
+      redis:
+        containers:
+          app:
+            image:
+              repository: redis
+              tag: 7-alpine
+            resources:
+              requests:
+                cpu: 20m
+                memory: 32Mi
+              limits:
+                cpu: 200m
+                memory: 256Mi
+      app:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/helloworld44-89/audiofile
+              tag: latest
+            env:
+              REDIS_URL: "redis://audiofile-redis:6379/0"
+              ACTIVATION_BYTES: "4169ef1e"
+              DATABASE_URL: "sqlite:///config/audiofile.db"
+              LIBRARY_PATH: "/library"
+              INBOX_PATH: "/inbox"
+              LOGS_PATH: "/logs"
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 8080
+                  initialDelaySeconds: 20
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 8080
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128Mi
+              limits:
+                cpu: 1000m
+                memory: 1Gi
+    service:
+      redis:
+        controller: redis
+        ports:
+          redis:
+            port: 6379
+      app:
+        controller: app
+        ports:
+          http:
+            port: 8080
+    persistence:
+      config:
+        accessMode: ReadWriteOnce
+        storageClass: local-path
+        size: 1Gi
+        advancedMounts:
+          app:
+            app:
+              - path: /config
+      inbox:
+        accessMode: ReadWriteOnce
+        storageClass: local-path
+        size: 5Gi
+        advancedMounts:
+          app:
+            app:
+              - path: /inbox
+      logs:
+        type: emptyDir
+        advancedMounts:
+          app:
+            app:
+              - path: /logs
+      library:
+        existingClaim: audiobooks-pvc
+        advancedMounts:
+          app:
+            app:
+              - path: /library
+    ingress:
+      app:
+        className: traefik
+        hosts:
+          - host: audiofile.conderhome.xyz
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - audiofile.conderhome.xyz
+            secretName: wildcard-conderhome-xyz-tls
