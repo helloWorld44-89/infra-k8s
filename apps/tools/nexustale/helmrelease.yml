@@ -140,7 +140,6 @@ spec:
             port: 80
     persistence:
       minio-data:
-        existingClaim: ""
         accessMode: ReadWriteOnce
         storageClass: local-path
         size: 5Gi
