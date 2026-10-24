@@ -81,8 +81,6 @@ spec:
 
       - job_name: 'homelab-servers'
         static_configs:
-          - targets: ['192.168.5.40:9100']
-            labels: {hostname: 'prod-ubsrv-01'}
           - targets: ['192.168.5.43:9100']
             labels: {hostname: 'prod-ubsrv-02'}
           - targets: ['192.168.5.42:9100']
