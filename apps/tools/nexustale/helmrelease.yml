@@ -28,37 +28,12 @@ spec:
               limits:
                 cpu: 200m
                 memory: 256Mi
-      nexustale-minio:
-        containers:
-          app:
-            image:
-              repository: minio/minio
-              tag: RELEASE.2025-10-15T17-29-55Z
-            args: ["server", "/data", "--console-address", ":9001"]
-            env:
-              MINIO_ROOT_USER:
-                valueFrom:
-                  secretKeyRef:
-                    name: nexustale-secrets
-                    key: MINIO_ACCESSKEY
-              MINIO_ROOT_PASSWORD:
-                valueFrom:
-                  secretKeyRef:
-                    name: nexustale-secrets
-                    key: MINIO_SECRETKEY
-            resources:
-              requests:
-                cpu: 50m
-                memory: 128Mi
-              limits:
-                cpu: 500m
-                memory: 512Mi
       nexustale-api:
         containers:
           app:
             image:
               repository: ghcr.io/helloworld44-89/nexustale/api
-              tag: latest
+              tag: v0.3.2
             env:
               NEXUSTALE_AUTH_JWTSECRET:
                 valueFrom:
@@ -70,25 +45,12 @@ spec:
                   secretKeyRef:
                     name: nexustale-secrets
                     key: ENCRYPTION_KEY
-              NEXUSTALE_MINIO_ACCESSKEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: nexustale-secrets
-                    key: MINIO_ACCESSKEY
-              NEXUSTALE_MINIO_SECRETKEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: nexustale-secrets
-                    key: MINIO_SECRETKEY
               NEXUSTALE_DB_URL:
                 valueFrom:
                   secretKeyRef:
                     name: nexustale-secrets
                     key: NEXUSTALE_DB_URL
               NEXUSTALE_REDIS_URL: "redis://nexustale-nexustale-redis:6379"
-              NEXUSTALE_MINIO_ENDPOINT: "nexustale-nexustale-minio:9000"
-              NEXUSTALE_MINIO_USESSL: "false"
-              NEXUSTALE_MINIO_BUCKET: "nexustale"
               NEXUSTALE_DB_MIGRATIONSPATH: "file:///migrations"
               NEXUSTALE_SERVER_REGISTRATIONOPEN: "true"
               NEXUSTALE_SERVER_PORT: "8080"
@@ -107,7 +69,7 @@ spec:
           app:
             image:
               repository: ghcr.io/helloworld44-89/nexustale/frontend
-              tag: latest
+              tag: v0.3.2
             resources:
               requests:
                 cpu: 20m
@@ -121,13 +83,6 @@ spec:
         ports:
           redis:
             port: 6379
-      nexustale-minio:
-        controller: nexustale-minio
-        ports:
-          api:
-            port: 9000
-          console:
-            port: 9001
       nexustale-api:
         controller: nexustale-api
         ports:
@@ -139,14 +94,6 @@ spec:
           http:
             port: 80
     persistence:
-      minio-data:
-        accessMode: ReadWriteOnce
-        storageClass: local-path
-        size: 5Gi
-        advancedMounts:
-          nexustale-minio:
-            app:
-              - path: /data
       nginx-conf:
         type: configMap
         name: nexustale-nginx-conf
