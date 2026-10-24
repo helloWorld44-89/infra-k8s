@@ -1,0 +1,173 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: nexustale
+  namespace: tools
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: app-template
+      version: "3.x"
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  values:
+    controllers:
+      nexustale-redis:
+        containers:
+          app:
+            image:
+              repository: redis
+              tag: 7-alpine
+            resources:
+              requests:
+                cpu: 20m
+                memory: 32Mi
+              limits:
+                cpu: 200m
+                memory: 256Mi
+      nexustale-minio:
+        containers:
+          app:
+            image:
+              repository: minio/minio
+              tag: latest
+            args: ["server", "/data", "--console-address", ":9001"]
+            env:
+              MINIO_ROOT_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: nexustale-secrets
+                    key: MINIO_ACCESSKEY
+              MINIO_ROOT_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: nexustale-secrets
+                    key: MINIO_SECRETKEY
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128Mi
+              limits:
+                cpu: 500m
+                memory: 512Mi
+      nexustale-api:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/helloworld44-89/nexustale/api
+              tag: latest
+            env:
+              NEXUSTALE_AUTH_JWTSECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: nexustale-secrets
+                    key: JWT_SECRET
+              NEXUSTALE_ENCRYPTION_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: nexustale-secrets
+                    key: ENCRYPTION_KEY
+              NEXUSTALE_MINIO_ACCESSKEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: nexustale-secrets
+                    key: MINIO_ACCESSKEY
+              NEXUSTALE_MINIO_SECRETKEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: nexustale-secrets
+                    key: MINIO_SECRETKEY
+              NEXUSTALE_DB_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: nexustale-secrets
+                    key: NEXUSTALE_DB_URL
+              NEXUSTALE_REDIS_URL: "redis://nexustale-redis:6379"
+              NEXUSTALE_MINIO_ENDPOINT: "nexustale-minio:9000"
+              NEXUSTALE_MINIO_USESSL: "false"
+              NEXUSTALE_MINIO_BUCKET: "nexustale"
+              NEXUSTALE_DB_MIGRATIONSPATH: "file:///migrations"
+              NEXUSTALE_SERVER_REGISTRATIONOPEN: "true"
+              NEXUSTALE_SERVER_PORT: "8080"
+              NEXUSTALE_GIT_REPOSPATH: "/data/repos"
+              NEXUSTALE_SERVER_ALLOWEDORIGIN: "*"
+              NEXUSTALE_SERVER_MODE: "release"
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                cpu: 1000m
+                memory: 1Gi
+      nexustale-frontend:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/helloworld44-89/nexustale/frontend
+              tag: latest
+            resources:
+              requests:
+                cpu: 20m
+                memory: 32Mi
+              limits:
+                cpu: 500m
+                memory: 256Mi
+    service:
+      nexustale-redis:
+        controller: nexustale-redis
+        ports:
+          redis:
+            port: 6379
+      nexustale-minio:
+        controller: nexustale-minio
+        ports:
+          api:
+            port: 9000
+          console:
+            port: 9001
+      nexustale-api:
+        controller: nexustale-api
+        ports:
+          http:
+            port: 8080
+      nexustale-frontend:
+        controller: nexustale-frontend
+        ports:
+          http:
+            port: 80
+    persistence:
+      minio-data:
+        existingClaim: ""
+        accessMode: ReadWriteOnce
+        storageClass: local-path
+        size: 5Gi
+        advancedMounts:
+          nexustale-minio:
+            app:
+              - path: /data
+      nginx-conf:
+        type: configMap
+        name: nexustale-nginx-conf
+        advancedMounts:
+          nexustale-frontend:
+            app:
+              - path: /etc/nginx/conf.d/default.conf
+                subPath: default.conf
+    ingress:
+      nexustale-frontend:
+        className: traefik
+        hosts:
+          - host: nexustale.conderhome.xyz
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: nexustale-frontend
+                  port: http
+        tls:
+          - hosts:
+              - nexustale.conderhome.xyz
+            secretName: wildcard-conderhome-xyz-tls

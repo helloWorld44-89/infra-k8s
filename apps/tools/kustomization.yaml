@@ -5,4 +5,5 @@ resources:
   - docs-site
   - homepage
   - mysql
+  - nexustale
   - open-webui
