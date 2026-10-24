@@ -1,0 +1,84 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: open-webui
+  namespace: tools
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: app-template
+      version: "3.x"
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  values:
+    controllers:
+      open-webui:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/open-webui/open-webui
+              tag: main
+            env:
+              OLLAMA_BASE_URL: "http://192.168.5.26:11434"
+              SCARF_NO_ANALYTICS: "true"
+              DO_NOT_TRACK: "true"
+              ANONYMIZED_TELEMETRY: "false"
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8080
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8080
+                  initialDelaySeconds: 15
+                  periodSeconds: 10
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                cpu: 2000m
+                memory: 2Gi
+    service:
+      open-webui:
+        controller: open-webui
+        ports:
+          http:
+            port: 8080
+    persistence:
+      data:
+        accessMode: ReadWriteOnce
+        storageClass: local-path
+        size: 5Gi
+        globalMounts:
+          - path: /app/backend/data
+    ingress:
+      open-webui:
+        className: traefik
+        hosts:
+          - host: ai.conderhome.xyz
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: open-webui
+                  port: http
+        tls:
+          - hosts:
+              - ai.conderhome.xyz
+            secretName: wildcard-conderhome-xyz-tls
