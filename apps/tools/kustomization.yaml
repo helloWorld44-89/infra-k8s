@@ -4,6 +4,7 @@ resources:
   - cloudbeaver
   - docs-site
   - homepage
+  - keyshift
   - mysql
   - nebula-sync
   - nexustale
