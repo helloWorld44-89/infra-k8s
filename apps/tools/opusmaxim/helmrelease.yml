@@ -1,0 +1,97 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: opusmaxim
+  namespace: tools
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: app-template
+      version: "3.x"
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  values:
+    controllers:
+      app:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/helloworld44-89/opusmaxim
+              tag: latest
+            env:
+              TZ: "America/Chicago"
+              FLASK_APP: "app.py"
+              SECRET_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: opusmaxim-secrets
+                    key: SECRET_KEY
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 5000
+                  initialDelaySeconds: 15
+                  periodSeconds: 20
+                  timeoutSeconds: 10
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 5000
+                  initialDelaySeconds: 5
+                  periodSeconds: 10
+            resources:
+              requests:
+                cpu: 20m
+                memory: 64Mi
+              limits:
+                cpu: 500m
+                memory: 256Mi
+    service:
+      app:
+        controller: app
+        ports:
+          http:
+            port: 5000
+    persistence:
+      instance:
+        accessMode: ReadWriteOnce
+        storageClass: local-path
+        size: 1Gi
+        advancedMounts:
+          app:
+            app:
+              - path: /app/instance
+      avatars:
+        accessMode: ReadWriteOnce
+        storageClass: local-path
+        size: 1Gi
+        advancedMounts:
+          app:
+            app:
+              - path: /app/todolist/static/avatars
+    ingress:
+      app:
+        className: traefik
+        hosts:
+          - host: opusmaxim.conderhome.xyz
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - opusmaxim.conderhome.xyz
+            secretName: wildcard-conderhome-xyz-tls
