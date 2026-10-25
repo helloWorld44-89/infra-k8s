@@ -1,0 +1,84 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: actual-budget
+  namespace: tools
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: app-template
+      version: "3.x"
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  values:
+    controllers:
+      app:
+        containers:
+          app:
+            image:
+              repository: docker.io/actualbudget/actual-server
+              tag: latest
+            env:
+              ACTUAL_UPLOAD_FILE_SYNC_SIZE_LIMIT_MB: "20"
+              NODE_ENV: "production"
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 5006
+                  initialDelaySeconds: 15
+                  periodSeconds: 20
+                  timeoutSeconds: 10
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 5006
+                  initialDelaySeconds: 5
+                  periodSeconds: 10
+            resources:
+              requests:
+                cpu: 20m
+                memory: 128Mi
+              limits:
+                cpu: 500m
+                memory: 512Mi
+    service:
+      app:
+        controller: app
+        ports:
+          http:
+            port: 5006
+    persistence:
+      data:
+        accessMode: ReadWriteOnce
+        storageClass: local-path
+        size: 1Gi
+        advancedMounts:
+          app:
+            app:
+              - path: /data
+    ingress:
+      app:
+        className: traefik
+        hosts:
+          - host: budget.conderhome.xyz
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - budget.conderhome.xyz
+            secretName: wildcard-conderhome-xyz-tls
