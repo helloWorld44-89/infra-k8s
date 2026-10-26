@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: thunder-proxmox
+  namespace: tools
+spec:
+  type: ExternalName
+  externalName: 192.168.5.10
+  ports:
+    - port: 8006
+---
+apiVersion: traefik.io/v1alpha1
+kind: ServersTransport
+metadata:
+  name: thunder-proxmox-transport
+  namespace: tools
+spec:
+  # Proxmox's web UI uses a self-signed cert on 8006 -- trust it on the
+  # backend hop only. Frontend TLS to the client is still the real
+  # wildcard cert via the IngressRoute below.
+  insecureSkipVerify: true
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: thunder-proxmox
+  namespace: tools
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`thunder.conderhome.xyz`)
+      kind: Rule
+      services:
+        - name: thunder-proxmox
+          port: 8006
+          scheme: https
+          serversTransport: thunder-proxmox-transport
+  tls:
+    secretName: wildcard-conderhome-xyz-tls
