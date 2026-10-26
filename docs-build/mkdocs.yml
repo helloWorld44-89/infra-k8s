@@ -74,6 +74,51 @@ nav:
           - API Documentation: docs-site/api-documentation.md
           - User Guide: docs-site/user-guide.md
           - Deployment Guide: docs-site/deployment-guide.md
+      - Vaultwarden:
+          - Architecture: vaultwarden/architecture.md
+          - API Documentation: vaultwarden/api-documentation.md
+          - User Guide: vaultwarden/user-guide.md
+          - Deployment Guide: vaultwarden/deployment-guide.md
+      - KeyShift:
+          - Architecture: keyshift/architecture.md
+          - API Documentation: keyshift/api-documentation.md
+          - User Guide: keyshift/user-guide.md
+          - Deployment Guide: keyshift/deployment-guide.md
+      - Actual Budget:
+          - Architecture: actual-budget/architecture.md
+          - API Documentation: actual-budget/api-documentation.md
+          - User Guide: actual-budget/user-guide.md
+          - Deployment Guide: actual-budget/deployment-guide.md
+      - Open WebUI:
+          - Architecture: open-webui/architecture.md
+          - API Documentation: open-webui/api-documentation.md
+          - User Guide: open-webui/user-guide.md
+          - Deployment Guide: open-webui/deployment-guide.md
+      - Nebula Sync:
+          - Architecture: nebula-sync/architecture.md
+          - API Documentation: nebula-sync/api-documentation.md
+          - User Guide: nebula-sync/user-guide.md
+          - Deployment Guide: nebula-sync/deployment-guide.md
+      - NexusTale:
+          - Architecture: nexustale/architecture.md
+          - API Documentation: nexustale/api-documentation.md
+          - User Guide: nexustale/user-guide.md
+          - Deployment Guide: nexustale/deployment-guide.md
+      - OpusMaxim:
+          - Architecture: opusmaxim/architecture.md
+          - API Documentation: opusmaxim/api-documentation.md
+          - User Guide: opusmaxim/user-guide.md
+          - Deployment Guide: opusmaxim/deployment-guide.md
+      - wg-easy:
+          - Architecture: wg-easy/architecture.md
+          - API Documentation: wg-easy/api-documentation.md
+          - User Guide: wg-easy/user-guide.md
+          - Deployment Guide: wg-easy/deployment-guide.md
+      - Thunder Proxy:
+          - Architecture: thunder-proxy/architecture.md
+          - API Documentation: thunder-proxy/api-documentation.md
+          - User Guide: thunder-proxy/user-guide.md
+          - Deployment Guide: thunder-proxy/deployment-guide.md
   - Monitoring:
       - Monitoring Setup: monitoring/monitoring-setup.md
   - Proxmox & Ansible (infra repo):
