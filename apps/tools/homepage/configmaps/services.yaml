@@ -124,7 +124,8 @@ data:
             href: https://guest.conderhome.xyz
         - KeyShift:
             icon: keyshift.png
-            href: https://guest.conderhome.xyz/admin
+            href: https://keyshift.conderhome.xyz
+            ping: https://keyshift.conderhome.xyz
     - Services:
         - Termix:
             icon: termix.png
