@@ -129,24 +129,17 @@ data:
         - Termix:
             icon: termix.png
             href: https://termix.conderhome.xyz
-        - NGINX Proxy Manager:
-            icon: nginx-proxy-manager.png
-            href: http://192.168.5.42:81
-            ping: http://192.168.5.42:81
-            widget:
-              type: npm
-              url: http://192.168.5.42:81
-              username: m40a3lphoenix@gmail.com
-              password: Baseball44
         - Wireguard:
             icon: wireguard.png
-            href: http://192.168.5.42:5000
-            ping: http://192.168.5.42:5000
+            href: http://192.168.5.65:51821
+            ping: http://192.168.5.65:51821
+            # TODO: widget disabled -- needs the real wg-easy login password
+            # (this instance uses a UI-created account, no static env var
+            # password exists to read). Fill in and uncomment to enable:
             #widget:
               #type: wgeasy
-              #url: http://192.168.5.16:5000
-              #username: root
-              #password: Baseball44
+              #url: http://192.168.5.65:51821
+              #password: CHANGEME
               #fields: ["connected", "enabled", "disabled", "total"]
         - Actual Budget:
             icon: actual-budget.png
@@ -169,14 +162,6 @@ data:
             href: https://nexustale.conderhome.xyz
             ping: https://nexustale.conderhome.xyz
     - Infrastructure:
-        - Authentik:
-            icon: authentik.png
-            href: https://auth.conderhome.xyz
-            ping: https://auth.conderhome.xyz
-            #widget:
-              #type: authentik
-              #url: https://auth.conderhome.xyz
-              #key: JYy5O1pULGw40krp42Tw4BrPY6SRge7rQaCokG5om6V0sQiqU48psBIfIDKZ
         - Proxmox:
             icon: proxmox.png
             href: https://thunder.conderhome.xyz
@@ -187,14 +172,6 @@ data:
               username: API@pam!homepage
               password: 41d176d1-bd7f-4c1f-aa79-32cf45936af7
               #node: pve-1 # optional
-        - Dockhand:
-            icon: dockhand.png
-            href: https://dockhand.conderhome.xyz
-            widget:
-              type: dockhand
-              url: https://dockhand.conderhome.xyz
-              username: jconder44 # required for local auth
-              password: Baseball44 # required for local auth
         - Grafana:
             icon: grafana.png
             href: https://grafana.conderhome.xyz
