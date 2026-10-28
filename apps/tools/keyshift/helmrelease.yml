@@ -34,6 +34,12 @@ spec:
                   secretKeyRef:
                     name: keyshift-secrets
                     key: SECRET_KEY
+              ENCRYPTION_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: keyshift-encryption
+                    key: ENCRYPTION_KEY
+              TRUSTED_PROXY_COUNT: "1"  # traffic arrives via Traefik ingress
             probes:
               liveness:
                 enabled: true
