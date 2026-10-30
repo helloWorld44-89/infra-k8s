@@ -41,13 +41,15 @@ spec:
               HOOKS_RATE_LIMIT: "60"
               HOOKS_RATE_WINDOW: "1m"
             probes:
+              # Caddy's admin API binds 127.0.0.1:2019 only (matches upstream's own compose
+              # healthcheck) — a k8s httpGet probe hits the pod IP, not loopback, and always
+              # gets connection-refused, so this has to be an exec probe instead.
               liveness:
                 enabled: true
                 custom: true
                 spec:
-                  httpGet:
-                    path: /config/
-                    port: 2019
+                  exec:
+                    command: ["wget", "-q", "-O", "/dev/null", "http://127.0.0.1:2019/config/"]
                   periodSeconds: 30
                   timeoutSeconds: 5
                   failureThreshold: 3
@@ -55,9 +57,8 @@ spec:
                 enabled: true
                 custom: true
                 spec:
-                  httpGet:
-                    path: /config/
-                    port: 2019
+                  exec:
+                    command: ["wget", "-q", "-O", "/dev/null", "http://127.0.0.1:2019/config/"]
                   periodSeconds: 15
                   timeoutSeconds: 5
                   failureThreshold: 3
