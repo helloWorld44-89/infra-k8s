@@ -47,23 +47,25 @@ spec:
               # Updates section calls GitHub for version checks; off since we manage images via Flux
               XMAGE_UPDATE_CHECK: "off"
             probes:
-              # first boot compiles the card database — can take tens of minutes
+              # /healthz answers on 127.0.0.1 only (confirmed from the server's own startup
+              # log: "Health check on http://127.0.0.1:17173/healthz") — a k8s httpGet probe
+              # hits the pod IP, not loopback, and always gets connection-refused, so this has
+              # to be an exec probe instead. First boot also compiles the card database, which
+              # can take tens of minutes — the startup probe's failureThreshold covers that.
               startup:
                 enabled: true
                 custom: true
                 spec:
-                  httpGet:
-                    path: /healthz
-                    port: 17173
+                  exec:
+                    command: ["wget", "-q", "-O", "/dev/null", "http://127.0.0.1:17173/healthz"]
                   periodSeconds: 30
                   failureThreshold: 60 # ~30 min grace before anything considers it stuck
               liveness:
                 enabled: true
                 custom: true
                 spec:
-                  httpGet:
-                    path: /healthz
-                    port: 17173
+                  exec:
+                    command: ["wget", "-q", "-O", "/dev/null", "http://127.0.0.1:17173/healthz"]
                   periodSeconds: 30
                   timeoutSeconds: 5
                   failureThreshold: 3
@@ -71,9 +73,8 @@ spec:
                 enabled: true
                 custom: true
                 spec:
-                  httpGet:
-                    path: /healthz
-                    port: 17173
+                  exec:
+                    command: ["wget", "-q", "-O", "/dev/null", "http://127.0.0.1:17173/healthz"]
                   periodSeconds: 15
                   timeoutSeconds: 5
                   failureThreshold: 3
