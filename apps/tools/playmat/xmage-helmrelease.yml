@@ -1,0 +1,132 @@
+# Playmat / XMage engine. Service MUST be named "xmage" (not release-prefixed) because the
+# Caddy image's baked-in Caddyfile reverse-proxies to the literal hostname "xmage:17172" and
+# "xmage:17174" (see web-helmrelease.yml) — there is no env var to change that. Using a
+# standalone HelmRelease named "xmage" makes app-template's default service name "xmage",
+# matching that hardcoded upstream exactly, no Caddyfile/image edits needed.
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: xmage
+  namespace: tools
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: app-template
+      version: "3.x"
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  values:
+    controllers:
+      app:
+        strategy: Recreate # single-process H2/file-backed game server, can't roll two at once
+        containers:
+          app:
+            image:
+              repository: ghcr.io/arcanite24/playmat-server
+              tag: master
+            env:
+              TZ: "America/Chicago"
+              # internal-only LAN deployment: no public auth, no mail/OAuth/payment providers
+              XMAGE_ALLOWED_ORIGINS: "https://playmat.conderhome.xyz"
+              XMAGE_PUBLIC_URL: "https://playmat.conderhome.xyz"
+              # only the "web" (Caddy) pod in this namespace forwards X-Forwarded-For to us;
+              # trust the cluster pod network, not a single fixed IP (k8s pod IPs aren't static)
+              XMAGE_TRUSTED_PROXIES: "10.42.0.0/16"
+              XMAGE_CAREER: "on"
+              XMAGE_ACCESS: "open"
+              XMAGE_AUTH: "false"
+              XMAGE_SAVE_GAMES: "false"
+              XMAGE_REPLAYS: "true"
+              XMAGE_REPLAY_DAYS: "30"
+              XMAGE_REPLAY_MAX: "300"
+              XMAGE_MAX_GAME_THREADS: "4"
+              XMAGE_MAX_AI_OPPONENTS: "4"
+              # Updates section calls GitHub for version checks; off since we manage images via Flux
+              XMAGE_UPDATE_CHECK: "off"
+            probes:
+              # first boot compiles the card database — can take tens of minutes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: 17173
+                  periodSeconds: 30
+                  failureThreshold: 60 # ~30 min grace before anything considers it stuck
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: 17173
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: 17173
+                  periodSeconds: 15
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+            resources:
+              requests:
+                cpu: 250m
+                memory: 512Mi
+              limits:
+                cpu: "1"
+                memory: 1536Mi
+    service:
+      app:
+        controller: app
+        nameOverride: xmage
+        ports:
+          ws:
+            port: 17172
+          healthz:
+            port: 17173
+    persistence:
+      db: # accounts, stats, table records, feedback, support ledger
+        accessMode: ReadWriteOnce
+        storageClass: local-path
+        size: 2Gi
+        advancedMounts:
+          app:
+            app:
+              - path: /opt/xmage/db
+      cards: # card database cache, rebuilt automatically when the image changes
+        accessMode: ReadWriteOnce
+        storageClass: local-path
+        size: 2Gi
+        advancedMounts:
+          app:
+            app:
+              - path: /opt/xmage/cards-db
+      saved: # finished-game replays for the web client's History screen
+        accessMode: ReadWriteOnce
+        storageClass: local-path
+        size: 1Gi
+        advancedMounts:
+          app:
+            app:
+              - path: /opt/xmage/saved
+      logs:
+        type: emptyDir
+        advancedMounts:
+          app:
+            app:
+              - path: /opt/xmage/logs
+      updates:
+        type: emptyDir
+        advancedMounts:
+          app:
+            app:
+              - path: /opt/xmage/updates

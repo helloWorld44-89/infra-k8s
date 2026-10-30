@@ -1,0 +1,105 @@
+# Playmat web client + Caddy. This is the only component with an Ingress.
+# Runs Caddy in "behind another reverse proxy" mode (the project's own documented pattern
+# for exactly this case — see ops/web/README.md "Behind another reverse proxy") so Traefik +
+# our existing wildcard *.conderhome.xyz cert terminates TLS, and Caddy just serves plain
+# HTTP on :80 for PROXIED_HOST. Caddy's own automatic-HTTPS block for $DOMAIN still starts
+# and will log harmless failed ACME attempts (no inbound :80/:443 from the internet) — this
+# is expected, documented behavior for a LAN/internal deployment, not a bug.
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: playmat
+  namespace: tools
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: app-template
+      version: "3.x"
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  values:
+    controllers:
+      app:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/arcanite24/playmat-web
+              tag: master
+            env:
+              DOMAIN: "playmat.conderhome.xyz"
+              PROXIED_HOST: "playmat.conderhome.xyz"
+              # Traefik ingress pods call us directly; trust the cluster pod network for XFF
+              UPSTREAM_PROXIES: "10.42.0.0/16"
+              PUBLIC_HTTPS_PORT: "443"
+              WS_RATE_LIMIT: "30"
+              WS_RATE_WINDOW: "1m"
+              IMG_API_RATE_LIMIT: "300"
+              IMG_API_RATE_WINDOW: "1m"
+              HOOKS_RATE_LIMIT: "60"
+              HOOKS_RATE_WINDOW: "1m"
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /config/
+                    port: 2019
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /config/
+                    port: 2019
+                  periodSeconds: 15
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+            resources:
+              requests:
+                cpu: 20m
+                memory: 64Mi
+              limits:
+                cpu: 200m
+                memory: 256Mi
+    service:
+      app:
+        controller: app
+        nameOverride: playmat
+        ports:
+          http:
+            port: 80
+    persistence:
+      data:
+        type: emptyDir
+        advancedMounts:
+          app:
+            app:
+              - path: /data
+      config:
+        type: emptyDir
+        advancedMounts:
+          app:
+            app:
+              - path: /config
+    ingress:
+      app:
+        className: traefik
+        hosts:
+          - host: playmat.conderhome.xyz
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - playmat.conderhome.xyz
+            secretName: wildcard-conderhome-xyz-tls

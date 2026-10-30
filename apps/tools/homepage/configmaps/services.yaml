@@ -126,6 +126,10 @@ data:
             icon: keyshift.png
             href: https://keyshift.conderhome.xyz
             ping: https://keyshift.conderhome.xyz
+        - Playmat:
+            icon: https://raw.githubusercontent.com/arcanite24/playmat/master/brand/playmat-mark.svg
+            href: https://playmat.conderhome.xyz
+            ping: https://playmat.conderhome.xyz
     - Services:
         - Termix:
             icon: termix.png
