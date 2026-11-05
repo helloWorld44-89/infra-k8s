@@ -37,7 +37,13 @@ spec:
               XMAGE_TRUSTED_PROXIES: "10.42.0.0/16"
               XMAGE_CAREER: "on"
               XMAGE_ACCESS: "open"
-              XMAGE_AUTH: "false"
+              # Real accounts: without this, "logging in" with just a name is a transient guest
+              # session (localStorage restore token + same-client-IP reconnect), good for a few
+              # minutes, not a persisted identity — see docs/WebSocketAPI.md "Sessions". That's
+              # exactly the "doesn't remember me next visit" symptom. Password-only registration
+              # (authRegister with a password) works with no mail server configured; only
+              # password-reset-via-email silently won't work here, which is fine for a LAN server.
+              XMAGE_AUTH: "true"
               XMAGE_SAVE_GAMES: "false"
               XMAGE_REPLAYS: "true"
               XMAGE_REPLAY_DAYS: "30"
