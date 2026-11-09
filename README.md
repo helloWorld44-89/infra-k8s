@@ -67,9 +67,9 @@ infra-k8s/
         ├── external-dns/   # Auto-creates Pi-hole DNS records from Ingress
         ├── homepage/       # Internal service dashboard
         ├── kubernetes-dashboard/ # K8s web UI
-        ├── mysql/          # MySQL 8 instance
-        └── plane/          # Self-hosted project management (Postgres + Redis + MinIO)
+        └── mysql/          # MySQL 8 instance
 ```
+(Plane — self-hosted project management — was decommissioned; migrated to the Hermes dashboard.)
 
 ## How GitOps Works
 
