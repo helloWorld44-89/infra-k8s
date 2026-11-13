@@ -22,7 +22,7 @@ spec:
           app:
             image:
               repository: nginx
-              tag: 1.30.5-alpine
+              tag: 1.31.8-alpine
             env:
               IMGCACHE_IMAGES_MAX_SIZE: "10g"
               IMGCACHE_API_MAX_SIZE: "1g"

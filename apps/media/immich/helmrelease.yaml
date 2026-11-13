@@ -19,7 +19,7 @@ spec:
         containers:
           main:
             image:
-              tag: v3.2.2
+              tag: v3.4.1
             env:
               DB_HOSTNAME: shared-postgres-rw.databases.svc.cluster.local
               DB_PORT: "5432"
