@@ -30,7 +30,9 @@ spec:
         enabled: false
     # Webhook
     webhook:
-      timeout: 10s
+      # v1.21.x chart schema renamed this from a duration string (`timeout: 10s`) to an
+      # integer number of seconds — same 10s timeout, new field name.
+      timeoutSeconds: 10
     # Feature gates
     extraArgs:
       - --feature-gates=ExperimentalCertificateSigningRequestControllers=true
