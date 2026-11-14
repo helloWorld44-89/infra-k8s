@@ -59,8 +59,13 @@ spec:
           cpu: 20m
           memory: 32Mi
         limits:
-          cpu: 200m
-          memory: 128Mi
+          cpu: 500m
+          memory: 192Mi
+      startupProbe:
+        enabled: true
+        failureThreshold: 30
+        periodSeconds: 5
+        timeoutSeconds: 5
     prometheus-node-exporter:
       resources:
         requests:
