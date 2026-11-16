@@ -20,7 +20,7 @@ spec:
           app:
             image:
               repository: linuxserver/radarr
-              tag: 6.4.4 # {"$imagepolicy": "flux-system:radarr:tag"}
+              tag: 7.0.3 # {"$imagepolicy": "flux-system:radarr:tag"}
             env:
               TZ: America/Chicago
             probes:
