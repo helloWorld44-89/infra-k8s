@@ -27,6 +27,10 @@ spec:
             image:
               repository: ghcr.io/arcanite24/playmat-server
               tag: master
+              # :master is a floating tag — without this, IfNotPresent (the default for a
+              # non-"latest" tag) means the node keeps whatever digest it already cached and
+              # never re-pulls new master builds on its own.
+              pullPolicy: Always
             env:
               TZ: "America/Chicago"
               # internal-only LAN deployment: no public auth, no mail/OAuth/payment providers
